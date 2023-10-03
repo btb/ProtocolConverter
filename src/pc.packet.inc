@@ -665,6 +665,10 @@ Divide7:
 sap1:   clc
         adc     buffer
         sta     auxptr
+.if     .defined(IIc)       ;probably ok for Liron, but not in known rom dumps
+        bcc     noauxptr
+        inc     auxptr+1
+.endif
 ; 
 ; Now look up the first order guess for DIV and MOD. X still has bytecount DIV
 ; 256.

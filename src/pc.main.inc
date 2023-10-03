@@ -410,10 +410,31 @@ getresults:
         lda     CMDBlockh
         sta     SHTempY,x
         lda     CMDBufferh  ;Check status byte
+.if     .defined(Liron)
         and     #$10
         bne     noerror
+.else                       ;probably ok for Liron, but not in known rom dumps
+        lsr     a
+        lsr     a
+        lsr     a
+        bcc     ChkOffLn    ;no error, go check off line
+        lda     #ERR_WriteProt ;else set WPROT error
+.if     .defined(IIc)
+        bra     Error
+.else                       ;probably ok for Liron, but not in known rom dumps
+        bne     Error       ;bra is 65C02 only
+.endif
+
+ChkOffLn:
+        lsr     a
+        lsr     a
+.endif
         lda     #ERR_OffLine ;Assume error
+.if     .defined(Liron)
         bne     Error
+.else                       ;probably ok for Liron, but not in known rom dumps
+        bcc     Error
+.endif
 
 ; 
 ; Now it's time to think about returning to the caller. Remember that ProDOS
@@ -604,17 +625,6 @@ mdev1:  lda     Unit
         sta     Power2,y
 .endif
         rts
-
-.if     .defined(IIc)
-AppleTalkEntry:
-;
-; This is an entry for //c AppleTalk stump.
-;
-        ldx     #SlotNum
-        lda     #%01000000  ;PC call & return to alt ROM
-        sta     ProFLAG,x
-        jmp     atentry     ;just like normal
-.endif
 
 ; 
 squirrel:

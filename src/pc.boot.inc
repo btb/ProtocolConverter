@@ -135,15 +135,15 @@ Reset:
         ldx     #8
 rst1:
         lda     rcode,x
-        sta     loc0,x
+        sta     loc0+2,x
         dex
         bpl     rst1
-        jmp     loc0
+        jmp     loc0+2
 
 rcode:
         jsr MLIEntry
         .byte   CMD_Init
-        .word   $0007
+        .word   $0009
         rts
 
 cmdlist: .byte  1,0

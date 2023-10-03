@@ -22,12 +22,13 @@ Liron   =       1           ;Which machine?
 ;  CCC   OOO  N   N   V   EEEEE R  R    T   EEEEE R  R
 
 ;
-;        Unidisk 3.5 Driver Firmware   Version 1.0
+; Unidisk 3.5 Driver Firmware   Version 1.0.1
 ;
-;    Written by Michael Askins   x6243   May 15, 1985
+; Written by Michael Askins     May 15, 1985
+; Revised by M. Askins and R. Chiang    April 10, 1986
 ;
-;           Copyright Apple Computer, Inc. 1985
-;                   All Rights Reserved
+; Copyright Apple Computer, Inc. 1985,1986
+; All Rights Reserved
 ;
 ;
         msb on

@@ -1,5 +1,7 @@
 # IIc v1.0 (ROM 00)
-66e3623a1a14eb68570d7dd56664fbd8  IIc.bin
+#66e3623a1a14eb68570d7dd56664fbd8  IIc.bin
+# IIc v1.0.1 (ROM 03/04)
+8f97a9d0be4e71e9024a7cbcb8a3368b  IIc.bin
 
 # Liron v1.0 (no later version known?)
 6e3eb8c47b60948a2e069af0dbeb8224  Liron.bin
