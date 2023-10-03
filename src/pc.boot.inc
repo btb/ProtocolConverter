@@ -124,7 +124,7 @@ NoDisk:
         cstr    "NO DISK TO BOOT"
 .endif
 
-boottab: .byte  CMD_ReadBlock,$50,$00,$08,$00,$00 ;Read from 1st; blk8->$801
+.include "pc.boot.boottab.inc"
 
 ;
 ; This routine is called from the //c reset code. It forces a
