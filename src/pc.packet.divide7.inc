@@ -68,7 +68,9 @@ divide2:
 .if     .defined(Liron) || .defined(IIc)
         jmp     divide4     ;Sixth pass add in remains
 .else   ;SoftSP
+ .if   .defined(SSC) || .defined(Grappler)
         clc
+ .endif
         bcc     divide4
 .endif
 divide5:

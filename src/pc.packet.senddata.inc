@@ -7,8 +7,12 @@ SendData:
         jsr     SendPile
         bcc     sdoubt
         lda     #CommReset
+.if     .defined(Grappler) || .defined(KBOOHK)
+        jmp     AssignID
+.else
         jsr     AssignID
 sdoubt: rts
+.endif
 
 ; 
 SendPack:
@@ -51,7 +55,7 @@ spile1: lda     ByteCountl
         dec     Retry,x
         bne     spile1
         dec     Retry2,x
-.if     .defined(KBOOHK) || .defined(Grappler)
+.if     .defined(Grappler) || .defined(KBOOHK)
         lda     Retry2,x
         bmi     spilout
         cmp     #$08
@@ -59,12 +63,14 @@ spile1: lda     ByteCountl
         lsr     a
         lsr     a
         eor     #$01
-        tax
-        lda     enable1+TheOff,x
+        jsr     LCB3B
         ldx     Slot
         bne     spile1
 .else
         bpl     spile1      ;If all fails, carry is set
+.endif
+.if     .defined(Grappler) || .defined(KBOOHK)
+sdoubt:
 .endif
 spilout: rts
 

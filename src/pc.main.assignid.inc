@@ -56,9 +56,7 @@ mordevices:
         lda     ProFLAG,x
         eor     #$01
         sta     ProFLAG,x
-        and     #$7f
-        tax
-        jsr     LCB8F
+        jsr     LCB3B
         jsr     SendOnePack
         bcc     mdev2
 LCCD5:

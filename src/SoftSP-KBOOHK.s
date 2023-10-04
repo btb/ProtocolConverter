@@ -52,28 +52,19 @@ TheOff  =       $60         ;Disk II in slot 6
 .include "pc.packet.divide7.inc"
 .include "pc.packet.precheck.inc"
 
+        .res    1,$00
+        msb     off
+        cstr    "V6"
         lasc    "SoftSP"
+        msb     on
 
-        jmp     do_RTS
+        jmp     LCF30
         .byte   PCID2
         .word   0
         .byte   PDIDByte
         .byte   <ProDOSEntry
 
         .res    512,$00
-
-        sec
-.include "pc.packet.markerr.inc"
-.include "pc.packet.receivepack.inc"
-.include "pc.cread.inc"
-.include "pc.packet.shifttables.inc"
-.include "pc.main.paramctab.inc"
-.include "pc.packet.divide7tables.inc"
-.include "pc.packet.preamble.inc"
-.include "pc.packet.auxptrinc.inc"
-.include "pc.packet.enablechain.inc"
-.include "pc.packet.setxn0.inc"
-.include "pc.packet.start2.inc"
 
 WritePrep2:
         lda     MSlot
@@ -83,8 +74,32 @@ WritePrep2:
         rts
 
 .include "pc.packet.sendonepack.inc"
-.include "pc.packet.clrphases.inc"
 .include "pc.packet.waitiwmoff.inc"
+.include "pc.packet.clrphases.inc"
+
+        .byte   $24
+noprts: nop
+        rts
+
+.include "pc.packet.markerr.inc"
+.include "pc.packet.receivepack.inc"
+.include "pc.cread.inc"
+.include "pc.packet.enablechain.inc"
+.include "pc.packet.start2.inc"
+
+LCB3B:
+        ldx     #TheOff
+        lsr     A
+        bcc     LCB41
+        inx
+LCB41:
+        lda     enable1,x
+        rts
+
+.include "pc.packet.divide7tables.inc"
+.include "pc.packet.preamble.inc"
+.include "pc.packet.shifttables.inc"
+.include "pc.main.paramctab.inc"
 .include "pc.packet.senddata.inc"
 .include "pc.packet.rcvcount.inc"
 .include "pc.packet.resetchain.inc"
@@ -92,6 +107,8 @@ WritePrep2:
 .include "pc.main.entry.inc"
 
 .include "pc.boot.inc"
+.include "pc.packet.auxptrinc.inc"
+.include "pc.boot.boottab.inc"
 
         cstr    "Sun"
-        .res    20,$00
+        .res    56,$00

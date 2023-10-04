@@ -16,18 +16,10 @@ Bootcode:
         jsr     Reset
 .else   ;KBOOHK||Grappler
  .if    .defined(KBOOHK)
-LCF19:  bit     KBDSTRB
-        lda     KBD
-        bpl     LCF30
-        cmp     #$8d    ;'^M'
-        beq     LCF19
-        cmp     #$81    ;'^A'
-        bne     LCF30
-        bit     KBDSTRB
-LCF2C:  lda     #$a6
-        bne     LCF32
- .endif
+LCF30:  lda     #$a6
+ .else  ;Grappler
 LCF30:  lda     #$a7
+ .endif
 LCF32:  sta     ProFLAG,x
 .endif
 ; 
@@ -162,13 +154,7 @@ NoDisk:
  .endif
 .endif
 
-.if     .defined(KBOOHK)
-plpEntry:
-        plp
-        jmp     Entry
-.endif
-
-.if     .defined(IIc) || .defined(Liron) || .defined(KBOOHK)
+.if     .defined(IIc) || .defined(Liron)
 .include "pc.boot.boottab.inc"
 .endif
 

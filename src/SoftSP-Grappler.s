@@ -48,13 +48,16 @@ SlotNum =       MSlotValue & $07
 TheOff  =       $60         ;Disk II in slot 6
 .include "pc.bootspace.inc"
 
-        .org    $c836
+        .org    $c832
 .include "pc.boot.inc"
 
-        .res    2,$00
-        lasc    "SoftSP"
+        .res    3,$00
+        msb     off
+        cstr    "V6"
+        asc     "SoftSP"
+        msb on
 
-        jmp     Entry       ;or LowEntry?
+        jmp     Entry
         .byte   PCID2
         .word   0
         .byte   PDIDByte
@@ -100,18 +103,30 @@ do_RTS:
         .res    581,$00
 
         .org    $c800
-        sec
+
+.include "pc.packet.sendonepack.inc"
+.include "pc.packet.waitiwmoff.inc"
+.include "pc.packet.clrphases.inc"
+.include "pc.packet.enablechain.inc"
 .include "pc.packet.markerr.inc"
 .include "pc.packet.receivepack.inc"
 .include "pc.cread.inc"
-.include "pc.packet.shifttables.inc"
-.include "pc.main.paramctab.inc"
+.include "pc.packet.start2.inc"
+
+LCB3B:
+        ldx     #TheOff
+        lsr     A
+        bcc     LCB41
+        inx
+LCB41:
+        lda     enable1,x
+        rts
+
 .include "pc.packet.divide7tables.inc"
 .include "pc.packet.preamble.inc"
+.include "pc.packet.shifttables.inc"
 .include "pc.packet.auxptrinc.inc"
-.include "pc.packet.enablechain.inc"
-.include "pc.packet.setxn0.inc"
-.include "pc.packet.start2.inc"
+.include "pc.main.paramctab.inc"
 
 LowEntry2:
         lda     MSlot
@@ -120,9 +135,6 @@ LowEntry2:
         pha                     ;RTS will resume at 'Bootcode'
         rts
 
-.include "pc.packet.sendonepack.inc"
-.include "pc.packet.clrphases.inc"
-.include "pc.packet.waitiwmoff.inc"
 .include "pc.packet.divide7.inc"
 .include "pc.packet.precheck.inc"
 .include "pc.packet.senddata.inc"
@@ -132,4 +144,4 @@ LowEntry2:
 .include "pc.main.entry.inc"
 
         cstr    "Sun"
-        .res    35,$00
+        .res    45,$00

@@ -41,6 +41,9 @@ LCB9B:  lda     l6clr+TheOff
         dex
         bne     LCB9B
 SetXN0b:
+   .if  .defined(Grappler) || .defined(KBOOHK)
+SetXN0:
+   .endif
         ldx     #TheOff
  .endif
  .if    .defined(SSC)

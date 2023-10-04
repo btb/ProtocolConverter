@@ -132,10 +132,10 @@ LC844:
 ; 
         ldy     #0
 .else   ;SoftSP
-; .if     .defined(KBOOHK)
-; LCA09:  lda     l6clr+TheOff
-;         bpl     LCA09
-; .endif
+ .if    .defined(Grappler) || .defined(KBOOHK)
+LCA09:  lda     l6clr+TheOff
+        bpl     LCA09
+ .endif
         bcc     start0
         inc     buffer2+1
 .endif
@@ -146,10 +146,12 @@ LC844:
 start0:
 .if     .defined(Liron) || .defined(IIc)
         lda     l6clr,x     ;Read in the odd bytes topbits
-.else   ;SoftSP
+.elseif .defined(SSC)
         lda     l6clr+TheOff ;Read in the odd bytes topbits
 .endif
+.if     .defined(Liron) || .defined(IIc) || .defined(SSC)
         bpl     start0
+.endif
         asl     A
         sta     topbits
 .ifdef  SoftSP

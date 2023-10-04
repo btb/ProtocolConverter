@@ -51,7 +51,9 @@ SendOnePack:
 .else   ;SoftSP
         lda     auxptr
         beq     LCA0C
+ .if    .defined(SSC)
         nop
+ .endif
         .byte   $2c         ;combines with next line as 'bit $57c6'
 LCA0C:  dec   auxptr+1
 .endif
@@ -85,14 +87,23 @@ chainunbsy:
         lda     reqset,x    ;Raise REQ
 .endif
 ; 
+.if     .defined(Liron) || .defined(IIc) || .defined(SSC)
         ldy     #5          ;Sync plus packet begin
+.else   ;Grappler||KBOOHK
+        nop
+.endif
 ; 
         lda     #$ff        ;Send out the 1st byte sync
         sta     l7set,x
 ; 
 .if     .defined(SoftSP)
         ora     l6clr,x
+ .if    .defined(SSC)
         and     ($00),y
+ .else  ;Grappler||KBOOHK
+        ldy     #5          ;Sync plus packet begin
+        bit     topbits
+ .endif
 .endif
 
 ssb:

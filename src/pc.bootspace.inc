@@ -34,7 +34,7 @@ MLIEntry:                   ;Only use this label in //c version
         clc
 skip:
 .if     .defined(KBOOHK) || .defined(Grappler)
-        ror     MSlot       ;MSlot[7]=1 if ProDOS, =0 if MLI
+        ror     A           ;A[7]=1 if ProDOS, =0 if MLI
 .else
         ldx     #SlotNum
 ; Save the carry flag via ROR
@@ -56,32 +56,31 @@ bootcase:
         lda     #MSlotValue ;Load value for MSLOT
         sta     MSlot
 .endif
+.if     .defined(Liron) || .defined(IIc) || .defined(SSC)
         lda     ClearIOROMs ;Clear all $C800 latches but ours
-.if     .defined(KBOOHK) || .defined(Grappler)
+.else   ;KBOOHK||Grappler
+        ldx     ClearIOROMs ;Clear all $C800 latches but ours
         jsr     do_RTS      ;Get our address onto stack
+        tax                 ;boot flag onto negative flag
+        clc
+        bpl     skipsec     ;if negative, set carry
+        sec
+skipsec:
         tsx
         lda     stack,x     ;pull hi byte of our address off stack
-        ldx     MSlot       ;boot flag onto negative flag
-        clc
-        bpl     LC524       ;branch if MLI
-        sec                 ;boot back onto carry flag
 LC524:  sta     MSlot
         and     #$0f
         tax                 ;X <- slot number
         php
-        asl     ProFLAG,x
+        asl     ProFLAG,x   ;dump hi bit
         plp
         ror     ProFLAG,x   ;Finally have the boot on ProFLAG[7]
- .if    .defined(Grappler)
         plp
- .endif
 .endif
 
 .if     .defined(IIc) || .defined(Grappler)
         jmp     SWPROTO     ;Have to bank switch
-.elseif .defined(KBOOHK)
-        jmp     plpEntry
-.else   ;Liron||SoftSP
+.else   ;Liron||SSC||KBOOHK
         jmp     Entry
 .endif
 

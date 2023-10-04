@@ -84,26 +84,20 @@ pzp:    lda     ZeroPage,x
         lda     ProFLAG,y
         cmp     #$a7
         beq     eqa7
-        cmp     #$a6
-        beq     eqa7
         and     #$7e
         eor     #$64
         beq     allset
-; looks at line 17, character 1 and then line 9, characters 40..1
+; Checking what's on screen at line 17, character 8..1?
         ldx     #$08
 LCDE9:
-        lda     Line17
+        lda     Line17,x
         bpl     allset
         dex
         bpl     LCDE9
+eqa7:
         lda     #$e5
-        bne     nee5
-eqa7:   eor     #$42
-nee5:
         sta     ProFLAG,y
-        and     #$7f
-        tax
-        jsr     LCB8F
+        jsr     LCB3B
 .endif
 .if     .defined(Liron) || .defined(KBOOHK) || .defined(Grappler)
         lda     #$00
@@ -275,11 +269,6 @@ enabint:
 disabint:
         lda     #ERR_NoInt ;Interrupts not supported
         bne     ErrorHitch
-.endif
-
-.if     .defined(Grappler) || .defined(KBOOHK)
-        nop
-        nop
 .endif
 
 ; 
@@ -513,6 +502,10 @@ Error:  ldy     Slot        ;Need access to screenholes
 storeaway:
         txa                 ;Use the default value
 sa2:
+.if     .defined(Grappler) || .defined(KBOOHK)
+        jsr     SetXN0
+        ldy     monclr,x
+.endif
         ldy     Slot
         sta     SHTemp1,y   ;Keep in screenhole
 ;
@@ -525,7 +518,7 @@ sa2:
 ;  a Rev A IWM pops on for the full timeout period (since mode changes
 ;  are disabled when the motor is on. I know, it's bizarre. Blame Mac.
 ;
-.if     .defined(IIc) || .defined(SoftSP)
+.if     .defined(IIc) || .defined(SSC)
         lda     monclr+TheOff ;Motor off
  .if    .defined(IIc)
         bit     l6set+TheOff ;Into mode reg access mode
@@ -541,18 +534,17 @@ waitoff:
         bne     waitoff
         ldy     #0          ;Now set the reg back to $00
  .endif
- .if    .defined(IIc) || .defined(SSC)
         ldx     #TheOff    ;IWM's in slot 6
- .endif
  .if    .defined(IIc)
         jsr     SetIWMode
         lda     l6clr+TheOff
  .endif
         lda     ca1clr+TheOff
         lda     lstrbclr+TheOff
- .if    .defined(IIc) || .defined(SSC)
         ldy     Slot        ;Need Slot in Y
- .endif
+.elseif .defined(Grappler) || .defined(KBOOHK)
+        lda     ca1clr,x
+        lda     lstrbclr,x
 .endif
 ; 
 ; Now, restore our zero page area.

@@ -3,7 +3,7 @@ start2:
         jmp     SlotDepRd
 .elseif .defined(Liron)
         jmp     (pointer)
-.else   ;SoftSP
+.elseif .defined(SSC) || .defined(Grappler)
 bitearts:
         .byte   $24
 noprts: nop
