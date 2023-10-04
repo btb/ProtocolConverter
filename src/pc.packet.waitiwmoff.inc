@@ -22,10 +22,8 @@ wiwm2:  dey
 
         rts
 .elseif .defined(SoftSP)
- .if    .defined(SSC) || .defined(KBOOHK)
-        ldx     #TheOff
- .endif
  .if    .defined(SSC)
+        ldx     #TheOff
         lda     enable1,x
  .endif
 LCB93:
@@ -37,13 +35,19 @@ LCB93:
         lda     enable1+TheOff
   .endif
         lda     monset+TheOff
+  .if   .defined(KBOOHK)
+        lda     l7clr+TheOff
+        ldx     #56
+  .endif
 LCB9B:  lda     l6clr+TheOff
   .if   .defined(KBOOHK)
-LCBF0:
-        lda     #$8c
-LCBF2:
-        sbc     #$01
-        bne     LCBF2
+        jsr     LCBAB
+        cmp     l6clr+TheOff
+        bne     SetXN0b
+        dex
+        bne     LCB9B
+SetXN0b:
+        ldx     #TheOff
   .endif
  .endif
  .if    .defined(SSC) || .defined(Grappler)

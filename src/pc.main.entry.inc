@@ -55,7 +55,7 @@ noplay:
 ; 
         php                ;Save interrupt status
 .if     .defined(KBOOHK)
-        jsr     WaitIWMOff ;Must preserve Y!!
+        jsr     LCB93
 .endif
         sei                ;No interrupts please
 ; 

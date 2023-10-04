@@ -95,4 +95,4 @@ WritePrep2:
 .include "pc.boot.inc"
 
         cstr    "Sun"
-        .res    39,$00
+        .res    29,$00
