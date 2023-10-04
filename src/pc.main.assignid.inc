@@ -22,9 +22,6 @@ AssignID:
         lda     #CMD_Init
         sta     CMDCode
         lda     #0
-.if     .defined(Grappler)
-        sta     buffer+1
-.endif
         sta     Unit
         lda     #2          ;# parms in Init call
         sta     CMDPCount
@@ -33,10 +30,8 @@ AssignID:
 ; 
         lda     #CMDCode
         sta     buffer
-.if     !.defined(Grappler)
         lda     #>CMDCode
         sta     buffer+1
-.endif
         lda     #cmdmark
         sta     WPacketType
         jsr     ClrPhases   ;Make sure phases are off for Quark
@@ -53,7 +48,7 @@ mordevices:
         jsr     SendOnePack ;Send the command
         bcc     mdev2      ;If okay, skip to get response
 
-.if     .defined(KBOOHK)
+.if     .defined(KBOOHK) || .defined(Grappler)
         lda     Unit
         cmp     #$01
         bne     LCCD5

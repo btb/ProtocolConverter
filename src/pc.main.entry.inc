@@ -1,6 +1,8 @@
 Entry:  bcc     bentry      ;If non-boot, skip jump to boot
-.if     .defined(SSC) || .defined(Grappler)
+.if     .defined(SSC)
         jmp     BootC
+.elseif .defined(Grappler)
+        jmp     LowEntry2
 .else   ;Liron||IIc
         jmp     Bootcode
 .endif
@@ -14,7 +16,7 @@ bentry:
         trb     ProFLAG+SlotNum ;ProFLAG is fixed in //c
 
 atentry:
-.elseif .defined(SSC) || .defined(Grappler)
+.elseif .defined(SSC)
         lda     ProFLAG+SlotNum ;ProFLAG is fixed
         and     #%10111111
         sta     ProFLAG+SlotNum ;ProFLAG is fixed
@@ -47,14 +49,14 @@ noplay:
 ;  off for as long as possible before using the IWM (phases, /WRREQ
 ;  lines). Wait here 'til the Disk // motors are off.
 ;
-.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(IIc) || .defined(SSC)
         jsr     WaitIWMOff  ;Must preserve Y!!
 .endif
 ; 
 ; We can't really tolerate interrupts in most of the code, so disable
 ; 
         php                ;Save interrupt status
-.if     .defined(KBOOHK)
+.if     .defined(KBOOHK) || .defined(Grappler)
         jsr     LCB93
 .endif
         sei                ;No interrupts please
@@ -78,7 +80,7 @@ pzp:    lda     ZeroPage,x
         eor     Power2,y
         beq     allset
 @LCC19:
-.elseif .defined(KBOOHK)
+.elseif .defined(KBOOHK) || .defined(Grappler)
         lda     ProFLAG,y
         cmp     #$a7
         beq     eqa7
@@ -90,7 +92,7 @@ eqa7:   eor     #$42
         tax
         jsr     LCB8F
 .endif
-.if     .defined(Liron) || .defined(KBOOHK)
+.if     .defined(Liron) || .defined(KBOOHK) || .defined(Grappler)
         lda     #$00
         jsr     AssignID
 .endif
@@ -209,7 +211,7 @@ nin1:   sta     (CMDBuffer),y ;Clear some space
         sta     (CMDBuffer),y ;Stick it where they want it
         iny
 
-.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(IIc) || .defined(SSC)
         lda     $4F9        ; //c Port 1 interrupt status
 .else   ;Liron||KBOOHK
         lda     #$00
@@ -238,7 +240,7 @@ ErrorHitch2:
 BUnit:  lda     #ERR_BadUnit ;Only certain calls can have Unit#0
         bne     ErrorHitch  ;Branch always
 
-.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(IIc) || .defined(SSC)
 enabint:
         lda     #$c0
         sta     $5f9
@@ -255,7 +257,7 @@ disabint:
 aokayhitch:
  .endif
         jmp     AOkay
-.else   ;Liron||KBOOHK
+.else   ;Liron||KBOOHK||Grappler
 enabint:
 disabint:
         lda     #ERR_NoInt ;Interrupts not supported
@@ -436,7 +438,7 @@ getresults:
 .if     .defined(Liron)
         and     #$10
         bne     noerror
-.elseif .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.elseif .defined(IIc) || .defined(SSC)
 ;probably ok for Liron, but not in known rom dumps
         lsr     a
         lsr     a
@@ -453,14 +455,14 @@ ChkOffLn:
         lsr     a
         lsr     a
 .endif
-.if     .defined(KBOOHK)
+.if     .defined(KBOOHK) || .defined(Grappler)
         and     #$10
         bne     noerror
 .endif
         lda     #ERR_OffLine ;Assume error
-.if    .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if    .defined(IIc) || .defined(SSC)
         bcc     Error
-.else   ;Liron||KBOOHK
+.else   ;Liron||KBOOHK||Grappler
         bne     Error
 .endif
 
@@ -532,7 +534,7 @@ waitoff:
         lda     lstrbclr+TheOff
  .if    .defined(IIc) || .defined(SSC)
         ldy     Slot        ;Need Slot in Y
- .elseif .defined(KBOOHK)
+ .elseif .defined(KBOOHK) || .defined(Grappler)
         ldx     Slot
         rol     ProFLAG,x
  .endif
@@ -570,5 +572,7 @@ finalskip:
 ick1:
         plp
 .endif
+.if     !.defined(Grappler)
 do_RTS:
+.endif
         rts

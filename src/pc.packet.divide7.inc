@@ -1,4 +1,4 @@
-.if     .defined(Liron) || .defined(IIc) || .defined(KBOOHK)
+.if     .defined(Liron) || .defined(IIc) || .defined(KBOOHK) || .defined(Grappler)
 WritePrep:
 .endif
 Divide7:
@@ -72,6 +72,6 @@ divide2:
         bcc     divide4
 .endif
 divide5:
-.if     .defined(SSC) || .defined(Grappler)
+.if     .defined(SSC)
         rts
 .endif

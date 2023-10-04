@@ -51,7 +51,7 @@ spile1: lda     ByteCountl
         dec     Retry,x
         bne     spile1
         dec     Retry2,x
-.if     .defined(KBOOHK)
+.if     .defined(KBOOHK) || .defined(Grappler)
         lda     Retry2,x
         bmi     spilout
         cmp     #$02

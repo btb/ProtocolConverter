@@ -31,16 +31,10 @@ LCB93:
         lda     monset,x
         lda     l6clr,x
  .else  ;Grappler||KBOOHK
-  .if   .defined(Grappler)
-        lda     enable1+TheOff
-  .endif
         lda     monset+TheOff
-  .if   .defined(KBOOHK)
         lda     l7clr+TheOff
         ldx     #56
-  .endif
 LCB9B:  lda     l6clr+TheOff
-  .if   .defined(KBOOHK)
         jsr     LCBAB
         cmp     l6clr+TheOff
         bne     SetXN0b
@@ -48,9 +42,8 @@ LCB9B:  lda     l6clr+TheOff
         bne     LCB9B
 SetXN0b:
         ldx     #TheOff
-  .endif
  .endif
- .if    .defined(SSC) || .defined(Grappler)
+ .if    .defined(SSC)
         pha
 LCBF0:
         lda     #$8c

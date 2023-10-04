@@ -48,36 +48,88 @@ SlotNum =       MSlotValue & $07
 TheOff  =       $60         ;Disk II in slot 6
 .include "pc.bootspace.inc"
 
+        .org    $c831
 .include "pc.boot.inc"
-.include "pc.boot.boottab.inc"
-        .byte   $c0,$c1
-.include "pc.packet.preamble.inc"
-.include "pc.packet.precheck.inc"
-.include "pc.main.paramctab.inc"
-.include "pc.packet.divide7tables.inc"
 
+        .res    7,$00
+        lasc    "SoftSP"
+
+        jmp     Entry       ;or LowEntry?
         .byte   PCID2
         .word   0
         .byte   PDIDByte
         .byte   <ProDOSEntry
 
-        .org    $c900
+        .res    1198,$00
+
+;
+; Code for switching between banks
+;
+
+; X contains slot number of Grappler
+SWPROTO:
+        php
+        txa
+        asl     A
+        asl     A
+        asl     A
+        asl     A
+        plp
+        tay                 ;Y <- Grappler soft switches offset
+        sta     gbank2,y    ;select Grappler ROM bank 2
+;
+; At this point, execution should continue in the top half of the ROM,
+; at 'Entry'
+;
+
+;
+; Don't know yet how this is reached
+; other than that's what would happen if you called 'Entry'
+; when bank 1 is selected
+;
+LowEntry:
+        lda     MSlot
+        pha
+        lda     #<Bootcode-1
+        pha                     ;RTS will resume at 'Bootcode'
+do_RTS:
+        rts
+
+.include "pc.boot.boottab.inc"
+
+        .res    569,$00
+
+        .org    $c800
+        sec
 .include "pc.packet.markerr.inc"
 .include "pc.packet.receivepack.inc"
 .include "pc.cread.inc"
 .include "pc.packet.shifttables.inc"
-.include "pc.packet.divide7.inc"
-.include "pc.packet.sendonepack.inc"
+.include "pc.main.paramctab.inc"
+.include "pc.packet.divide7tables.inc"
+.include "pc.packet.preamble.inc"
 .include "pc.packet.auxptrinc.inc"
 .include "pc.packet.enablechain.inc"
 .include "pc.packet.setxn0.inc"
 .include "pc.packet.start2.inc"
-.include "pc.packet.senddata.inc"
+
+LowEntry2:
+        lda     MSlot
+        pha
+        lda     #<Bootcode-1
+        pha                     ;RTS will resume at 'Bootcode'
+        rts
+
+.include "pc.packet.sendonepack.inc"
 .include "pc.packet.clrphases.inc"
 .include "pc.packet.waitiwmoff.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+.include "pc.packet.senddata.inc"
 .include "pc.packet.rcvcount.inc"
 .include "pc.packet.resetchain.inc"
 .include "pc.main.assignid.inc"
 .include "pc.main.entry.inc"
 
-        .res    18,$00
+        cstr    "Sun"
+        .res    40,$00

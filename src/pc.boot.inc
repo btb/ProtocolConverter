@@ -10,11 +10,12 @@ Bootcode:
         lda     #$aa
         sta     ProFLAG,x
         sta     Power1,x
-.elseif .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.elseif .defined(IIc) || .defined(SSC)
         lda     #MSlotValue
         sta     MSlot
         jsr     Reset
-.else   ;KBOOHK
+.else   ;KBOOHK||Grappler
+ .if    .defined(KBOOHK)
 LCF19:  bit     KBDSTRB
         lda     KBD
         bpl     LCF30
@@ -25,6 +26,7 @@ LCF19:  bit     KBDSTRB
         bit     KBDSTRB
 LCF2C:  lda     #$a6
         bne     LCF32
+ .endif
 LCF30:  lda     #$a7
 LCF32:  sta     ProFLAG,x
 .endif
@@ -35,7 +37,7 @@ bc1:    lda     boottab,y
         dey
         bpl     bc1
 
-.if     .defined(Liron) || .defined(KBOOHK)
+.if     .defined(Liron) || .defined(KBOOHK) || .defined(Grappler)
 ; 
 ; Now on //e, patch the Unit number (slot*16)
 ; 
@@ -45,17 +47,22 @@ bc1:    lda     boottab,y
         asl     A
         asl     A
         sta     CMDUnit
-.elseif .defined(SSC) || .defined(Grappler)
+.elseif .defined(SSC)
         clc
         ldx     #SlotNum
         ror     ProFLAG,x
+.endif
+.if     .defined(Grappler)
+        clc
 .endif
 
 ; 
 ; Now do the read from block zero
 ; 
-.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(IIc) || .defined(SSC)
         jsr     ProDOSEntry
+.elseif .defined(Grappler)
+        jsr     SWPROTO
 .else   ;Liron
         jsr     bentry
 .endif
@@ -95,9 +102,9 @@ coma:   bra     coma        ;He's dead Jim.
 
 bootmsg: asc    "Check Disk Drive."
 bmsglen = *-bootmsg
-.elseif .defined(SSC) || .defined(Grappler)
+.elseif .defined(SSC)
         rts
-.else   ;Liron||KBOOHK
+.else   ;Liron||KBOOHK||Grappler
         jsr     MON_SETVID
         jsr     MON_SETKBD
         ldx     $00
@@ -112,7 +119,7 @@ bmsglen = *-bootmsg
         jsr     MON_VTAB
         lda     #0
         sta     MON_CH
- .if    .defined(KBOOHK)
+ .if    .defined(KBOOHK) || .defined(Grappler)
         tax
  .else
         ldx     #IOErr-BootMsgs
@@ -163,7 +170,7 @@ NoDisk:
 ; This routine is called from the //c reset code. It forces a
 ;  reset of the PC Bus.
 ;
-.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(IIc) || .defined(SSC)
 Reset:
  .if    .defined(IIc)
         ldx     #8
@@ -188,6 +195,6 @@ rcode:
 cmdlist: .byte  1,0
 .endif
 
-.if     .defined(SSC) || .defined(Grappler)
+.if     .defined(SSC)
         rts
 .endif

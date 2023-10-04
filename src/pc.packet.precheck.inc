@@ -1,4 +1,4 @@
-.if     .defined(SSC) || .defined(Grappler)
+.if     .defined(SSC)
 WritePrep:
         jsr     Divide7
 .endif
@@ -16,7 +16,7 @@ PreCheck:
         lda     buffer+1
         pha                 ;Preserve buffer pointer
         lda     #0
-.if     .defined(KBOOHK)
+.if     .defined(KBOOHK) || .defined(Grappler)
         sta     tbodd
 .endif
         ldx     ByteCounth
@@ -68,7 +68,7 @@ xor4:   sta     checksum
 DetTopBits:
         ldy     oddbytes
         dey
-.if     .defined(Liron) || .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(Liron) || .defined(IIc) || .defined(SSC)
         lda     #0
         sta     tbodd
 .endif

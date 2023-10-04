@@ -78,9 +78,9 @@ Line17  =       $450        ;Line 17 of text screen
 ;*  SvBcH       $778+n      $778
 ;*
 
-.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(IIc) || .defined(SSC)
 scholes =       $473        ;Use the slot 0 sholes for temps
-.else   ;Liron
+.else   ;Liron||KBOOHK||Grappler
 scholes =       $478
 .endif
 
@@ -90,9 +90,9 @@ SHTemp1 =       scholes+$100
 Retry2  =       SHTemp1
 SHTempX =       scholes+$180
 SHTempY =       scholes+$200
-.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(IIc) || .defined(SSC)
 NumDevices =    $6f9        ;Actually in slot 6
-.else   ;Liron
+.else   ;Liron||KBOOHK||Grappler
 Power1  =       $06f8
 Power2  =       $0778
 NumDevices =    $7f8
@@ -175,6 +175,10 @@ l6clr   =       iwm+12      ;IWM read
 l6set   =       iwm+13      ;IWM WP-sense
 l7clr   =       iwm+14      ;IWM WP-sense/read
 l7set   =       iwm+15      ;IWM write
+
+.ifdef  Grappler
+gbank2  =       $c081       ;Select bank 2 of ROM
+.endif
 
 ;*
 ;* Error0 codes
