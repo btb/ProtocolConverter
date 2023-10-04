@@ -68,12 +68,19 @@ bootcase:
 LC524:  sta     MSlot
         and     #$0f
         tax                 ;X <- slot number
-        ror     ProFLAG,x   ;Finally have the boot on ProFLAG[7]
+        php
+        asl     ProFLAG,x
         plp
+        ror     ProFLAG,x   ;Finally have the boot on ProFLAG[7]
+ .if    .defined(Grappler)
+        plp
+ .endif
 .endif
 
 .if     .defined(IIc) || .defined(Grappler)
         jmp     SWPROTO     ;Have to bank switch
+.elseif .defined(KBOOHK)
+        jmp     plpEntry
 .else   ;Liron||SoftSP
         jmp     Entry
 .endif

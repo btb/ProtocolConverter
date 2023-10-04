@@ -48,10 +48,10 @@ SlotNum =       MSlotValue & $07
 TheOff  =       $60         ;Disk II in slot 6
 .include "pc.bootspace.inc"
 
-        .org    $c831
+        .org    $c836
 .include "pc.boot.inc"
 
-        .res    7,$00
+        .res    2,$00
         lasc    "SoftSP"
 
         jmp     Entry       ;or LowEntry?
@@ -60,7 +60,7 @@ TheOff  =       $60         ;Disk II in slot 6
         .byte   PDIDByte
         .byte   <ProDOSEntry
 
-        .res    1198,$00
+        .res    1186,$00
 
 ;
 ; Code for switching between banks
@@ -97,7 +97,7 @@ do_RTS:
 
 .include "pc.boot.boottab.inc"
 
-        .res    569,$00
+        .res    581,$00
 
         .org    $c800
         sec
@@ -132,4 +132,4 @@ LowEntry2:
 .include "pc.main.entry.inc"
 
         cstr    "Sun"
-        .res    40,$00
+        .res    57,$00

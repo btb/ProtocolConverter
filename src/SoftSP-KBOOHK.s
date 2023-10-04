@@ -52,7 +52,6 @@ TheOff  =       $60         ;Disk II in slot 6
 .include "pc.packet.divide7.inc"
 .include "pc.packet.precheck.inc"
 
-        .res    4,$00
         lasc    "SoftSP"
 
         jmp     LCF2C
@@ -95,4 +94,4 @@ WritePrep2:
 .include "pc.boot.inc"
 
         cstr    "Sun"
-        .res    29,$00
+        .res    42,$00

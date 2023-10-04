@@ -54,18 +54,14 @@ spile1: lda     ByteCountl
 .if     .defined(KBOOHK) || .defined(Grappler)
         lda     Retry2,x
         bmi     spilout
-        cmp     #$02
+        cmp     #$08
         bcs     spile1
+        lsr     a
+        lsr     a
         eor     #$01
-        sta     checksum
         tax
         lda     enable1+TheOff,x
         ldx     Slot
-        lda     ProFLAG,x
-        and     #$80
-        ora     #$02
-        ora     checksum
-        sta     ProFLAG,x
         bne     spile1
 .else
         bpl     spile1      ;If all fails, carry is set

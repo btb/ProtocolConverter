@@ -162,6 +162,12 @@ NoDisk:
  .endif
 .endif
 
+.if     .defined(KBOOHK)
+plpEntry:
+        plp
+        jmp     Entry
+.endif
+
 .if     .defined(IIc) || .defined(Liron) || .defined(KBOOHK)
 .include "pc.boot.boottab.inc"
 .endif

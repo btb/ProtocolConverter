@@ -534,9 +534,6 @@ waitoff:
         lda     lstrbclr+TheOff
  .if    .defined(IIc) || .defined(SSC)
         ldy     Slot        ;Need Slot in Y
- .elseif .defined(KBOOHK) || .defined(Grappler)
-        ldx     Slot
-        rol     ProFLAG,x
  .endif
 .endif
 ; 
