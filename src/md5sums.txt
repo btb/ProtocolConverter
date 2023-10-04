@@ -6,8 +6,8 @@
 # Liron v1.0 (no later version known?)
 6e3eb8c47b60948a2e069af0dbeb8224  Liron.bin
 
-# SoftSP DIY SSC/GraphiCard v1
-abebfbfe86efcc00c1d512cf1ec9f322  SoftSP-SSC.bin
+# SoftSP DIY SSC/GraphiCard v5mod
+0052b4c28fb01971ea1f5f7421c91e02  SoftSP-SSC.bin
 
 # SoftSP DIY Grappler+ v1
 #370122c704d76513918c5c313aa0845e  SoftSP-Grappler.bin
@@ -16,7 +16,9 @@ abebfbfe86efcc00c1d512cf1ec9f322  SoftSP-SSC.bin
 # SoftSP DIY Grappler+ v3
 #3e5c4d68c98b2e2284fc56543040ce07  SoftSP-Grappler.bin
 # SoftSP DIY Grappler+ v4a
-1bcbd43f727edc151638124e16cc8478  SoftSP-Grappler.bin
+#1bcbd43f727edc151638124e16cc8478  SoftSP-Grappler.bin
+# SoftSP DIY Grappler+ v5
+b57325455ea7034acff7ac73383108ce  SoftSP-Grappler.bin
 
 # SoftSP "OldVer"
 #46d0ba3c263bc19a0b3497c2ce4e4e42  SoftSP-KBOOHK.bin
@@ -25,4 +27,6 @@ abebfbfe86efcc00c1d512cf1ec9f322  SoftSP-SSC.bin
 # SoftSP v3
 #ec1c2d1a7eb21d474cf5688c258e4bd2  SoftSP-KBOOHK.bin
 # SoftSP v4
-75a5718fcdb87a048472cd43139c4008  SoftSP-KBOOHK.bin
+#75a5718fcdb87a048472cd43139c4008  SoftSP-KBOOHK.bin
+# SoftSP v5
+87b7ed747677aca5c2e53490fe64aaf9  SoftSP-KBOOHK.bin

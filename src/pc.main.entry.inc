@@ -86,7 +86,6 @@ pzp:    lda     ZeroPage,x
         beq     eqa7
         cmp     #$a6
         beq     eqa7
- .if    .defined(Grappler)
         and     #$7e
         eor     #$64
         beq     allset
@@ -99,12 +98,6 @@ LCDE9:
         bpl     LCDE9
         lda     #$e5
         bne     nee5
- .else
-        and     #$fe
-        eor     #$e4
-        beq     allset
-        lda     #$a7
- .endif
 eqa7:   eor     #$42
 nee5:
         sta     ProFLAG,y
@@ -284,7 +277,7 @@ disabint:
         bne     ErrorHitch
 .endif
 
-.if     .defined(Grappler)
+.if     .defined(Grappler) || .defined(KBOOHK)
         nop
         nop
 .endif

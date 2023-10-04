@@ -81,21 +81,18 @@ jmpdatdone:
 ; (111111110011111111001111111100 ...)
 ; 
 chainunbsy:
-.if     .defined(Liron) || .defined(IIc)
+.if     .defined(Liron) || .defined(IIc) || .defined(SoftSP)
         lda     reqset,x    ;Raise REQ
 .endif
 ; 
         ldy     #5          ;Sync plus packet begin
-.if     .defined(SoftSP)
-        lda     reqset,x    ;Raise REQ
-.endif
 ; 
         lda     #$ff        ;Send out the 1st byte sync
         sta     l7set,x
 ; 
-.ifdef  SoftSP
+.if     .defined(SoftSP)
         ora     l6clr,x
-        bne     ssc
+        and     ($00),y
 .endif
 
 ssb:

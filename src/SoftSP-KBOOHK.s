@@ -54,7 +54,7 @@ TheOff  =       $60         ;Disk II in slot 6
 
         lasc    "SoftSP"
 
-        jmp     LCF2C
+        jmp     do_RTS
         .byte   PCID2
         .word   0
         .byte   PDIDByte
@@ -94,4 +94,4 @@ WritePrep2:
 .include "pc.boot.inc"
 
         cstr    "Sun"
-        .res    34,$00
+        .res    20,$00
