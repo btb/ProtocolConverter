@@ -85,8 +85,17 @@ pzp:    lda     ZeroPage,x
         cmp     #$a7
         beq     eqa7
         cmp     #$a6
+ .if    .defined(Grappler)
         bne     allset
+ .else
+        beq     eqa7
+        and     #$fe
+        eor     #$e4
+        beq     allset
+        lda     #$a7
+ .endif
 eqa7:   eor     #$42
+nee5:
         sta     ProFLAG,y
         and     #$7f
         tax

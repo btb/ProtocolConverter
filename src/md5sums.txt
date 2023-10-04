@@ -21,4 +21,6 @@ abebfbfe86efcc00c1d512cf1ec9f322  SoftSP-SSC.bin
 # SoftSP v2
 #85102d3507fbc87101a8a4f405681dc9  SoftSP-KBOOHK.bin
 # SoftSP v3
-ec1c2d1a7eb21d474cf5688c258e4bd2  SoftSP-KBOOHK.bin
+#ec1c2d1a7eb21d474cf5688c258e4bd2  SoftSP-KBOOHK.bin
+# SoftSP v4
+75a5718fcdb87a048472cd43139c4008  SoftSP-KBOOHK.bin
