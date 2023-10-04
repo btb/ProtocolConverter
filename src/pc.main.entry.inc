@@ -500,14 +500,18 @@ waitoff:
         bne     waitoff
         ldy     #0          ;Now set the reg back to $00
  .endif
+ .if    !.defined(Grappler)
         ldx     #TheOff    ;IWM's in slot 6
+ .endif
  .if    .defined(IIc)
         jsr     SetIWMode
         lda     l6clr+TheOff
  .endif
         lda     ca1clr+TheOff
         lda     lstrbclr+TheOff
+ .if    !.defined(Grappler)
         ldy     Slot        ;Need Slot in Y
+ .endif
 .endif
 ; 
 ; Now, restore our zero page area.

@@ -22,11 +22,17 @@ wiwm2:  dey
 
         rts
 .elseif .defined(SoftSP)
+ .if    .defined(SSC)
         ldx     #TheOff
         lda     enable1,x
 LCB93:
         lda     monset,x
         lda     l6clr,x
+ .else  ;Grappler
+        lda     enable1+TheOff
+        lda     monset+TheOff
+LCB9B:  lda     l6clr+TheOff
+ .endif
         pha
 LCBF0:
         lda     #$8c

@@ -1,5 +1,5 @@
 
-all: IIc.bin Liron.bin SoftSP-SSC.bin
+all: IIc.bin Liron.bin SoftSP-SSC.bin SoftSP-Grappler.bin
 	md5sum --ignore-missing --check md5sums.txt
 	@echo Done.
 

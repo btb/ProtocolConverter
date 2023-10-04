@@ -21,7 +21,8 @@ Divide7:
 sap1:   clc
         adc     buffer
         sta     auxptr
-.if     .defined(IIc) || .defined(SSC) ;probably ok for Liron, but not in known rom dumps
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+;probably ok for Liron, but not in known rom dumps
         bcc     noauxptr
         inc     auxptr+1
 .endif

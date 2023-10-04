@@ -17,4 +17,7 @@ pdiv7tab:
 pmod7tab:
         .byte   $00,$04,$01
 div7tab: .byte  $00,$01,$02,$04,$09,$12
-mod7tab: .byte  $00,$01,$02,$04,$01,$02
+mod7tab: .byte  $00,$01,$02,$04
+.if     !.defined(Grappler)
+        .byte   $01,$02
+.endif

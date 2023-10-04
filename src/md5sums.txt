@@ -8,3 +8,6 @@
 
 # SoftSP DIY SSC/GraphiCard v1
 abebfbfe86efcc00c1d512cf1ec9f322  SoftSP-SSC.bin
+
+# SoftSP DIY Grappler+ v1
+370122c704d76513918c5c313aa0845e  SoftSP-Grappler.bin

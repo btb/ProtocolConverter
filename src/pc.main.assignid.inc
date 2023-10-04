@@ -22,6 +22,9 @@ AssignID:
         lda     #CMD_Init
         sta     CMDCode
         lda     #0
+.if     .defined(Grappler)
+        sta     buffer+1
+.endif
         sta     Unit
         lda     #2          ;# parms in Init call
         sta     CMDPCount
@@ -30,8 +33,10 @@ AssignID:
 ; 
         lda     #CMDCode
         sta     buffer
+.if     !.defined(Grappler)
         lda     #>CMDCode
         sta     buffer+1
+.endif
         lda     #cmdmark
         sta     WPacketType
         jsr     ClrPhases   ;Make sure phases are off for Quark
