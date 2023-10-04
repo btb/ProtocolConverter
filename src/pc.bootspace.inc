@@ -12,7 +12,7 @@
         ldx     #$03
 ; 
         cmp     #$00       ;Flag that this is a boot
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
         bcs     BootC
 .else   ;Liron
         bcs     bootcase
@@ -41,19 +41,24 @@ skip:
 ; Now save mslot and clear all $C800 ROMs
 ; 
 bootcase:
+.if     .defined(Liron) || .defined(IIc)
         ldx     #MSlotValue ;Load value for MSLOT
         stx     MSlot
         ldx     #SlotNum
+.elseif .defined(SoftSP)
+        lda     #MSlotValue ;Load value for MSLOT
+        sta     MSlot
+.endif
         lda     ClearIOROMs ;Clear all $C800 latches but ours
 
 
 .if     .defined(IIc)
         jmp     SWPROTO     ;Have to bank switch
-.else   ;Liron
+.else   ;Liron||SoftSP
         jmp     Entry
 .endif
 
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
 BootC:
         ldx     #SlotNum    ;Need Slot Number
 ; Will continue on to 'Bootcode' now

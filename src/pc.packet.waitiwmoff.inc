@@ -21,4 +21,18 @@ wiwm2:  dey
         ply
 
         rts
+.elseif .defined(SoftSP)
+        ldx     #TheOff
+        lda     enable1,x
+LCB93:
+        lda     monset,x
+        lda     l6clr,x
+        pha
+LCBF0:
+        lda     #$8c
+LCBF2:
+        sbc     #$01
+        bne     LCBF2
+        pla
+LCBAB:  rts
 .endif

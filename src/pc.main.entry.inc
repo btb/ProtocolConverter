@@ -1,5 +1,10 @@
 Entry:  bcc     bentry      ;If non-boot, skip jump to boot
+.if     .defined(SoftSP)
+        jmp     BootC
+.else   ;Liron||IIc
         jmp     Bootcode
+.endif
+
 ;
 ; X is still set to slot number
 ;
@@ -9,6 +14,10 @@ bentry:
         trb     ProFLAG+SlotNum ;ProFLAG is fixed in //c
 
 atentry:
+.elseif .defined(SoftSP)
+        lda     ProFLAG+SlotNum ;ProFLAG is fixed
+        and     #%10111111
+        sta     ProFLAG+SlotNum ;ProFLAG is fixed
 .endif
 
         cld                 ;Don't want decimal mode!!
@@ -38,7 +47,7 @@ noplay:
 ;  off for as long as possible before using the IWM (phases, /WRREQ
 ;  lines). Wait here 'til the Disk // motors are off.
 ;
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
         jsr     WaitIWMOff  ;Must preserve Y!!
 .endif
 ; 
@@ -184,7 +193,7 @@ nin1:   sta     (CMDBuffer),y ;Clear some space
         sta     (CMDBuffer),y ;Stick it where they want it
         iny
 
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
         lda     $4F9        ; //c Port 1 interrupt status
 .else   ;Liron
         lda     #$00
@@ -213,18 +222,22 @@ ErrorHitch2:
 BUnit:  lda     #ERR_BadUnit ;Only certain calls can have Unit#0
         bne     ErrorHitch  ;Branch always
 
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
 enabint:
         lda     #$c0
         sta     $5f9
+ .ifdef IIc
         lda     #$0f
         tsb     $c09a
         bne     aokayhitch
+ .endif
 
 disabint:
+ .ifdef IIc
         lda     #$01
         trb     $c09a
 aokayhitch:
+ .endif
         jmp     AOkay
 .else   ;Liron
 enabint:
@@ -407,7 +420,7 @@ getresults:
 .if     .defined(Liron)
         and     #$10
         bne     noerror
-.else
+.else                       ;probably ok for Liron, but not in known rom dumps
         lsr     a
         lsr     a
         lsr     a
@@ -471,8 +484,9 @@ sa2:
 ;  a Rev A IWM pops on for the full timeout period (since mode changes
 ;  are disabled when the motor is on. I know, it's bizarre. Blame Mac.
 ;
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
         lda     monclr+TheOff ;Motor off
+ .if    .defined(IIc)
         bit     l6set+TheOff ;Into mode reg access mode
         lda     #$2b        ;This is the magic "speed up" value
         sta     l7set+TheOff ;Throw into mode register
@@ -485,9 +499,12 @@ waitoff:
         and     #$20
         bne     waitoff
         ldy     #0          ;Now set the reg back to $00
+ .endif
         ldx     #TheOff    ;IWM's in slot 6
+ .if    .defined(IIc)
         jsr     SetIWMode
         lda     l6clr+TheOff
+ .endif
         lda     ca1clr+TheOff
         lda     lstrbclr+TheOff
         ldy     Slot        ;Need Slot in Y

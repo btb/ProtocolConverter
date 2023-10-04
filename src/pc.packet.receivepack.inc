@@ -24,7 +24,11 @@
 ;* Init the checksum                                                           *
 ;*******************************************************************************
 ReceivePack:
+.if     .defined(Liron) || .defined(IIc)
         lda     #$00
+.else   ;SoftSP
+        lda     #$80
+.endif
         sta     checksum
 ; 
 ; Copy over buffer -> buffer2
@@ -73,40 +77,88 @@ rdh2:   lda     l6clr,x
 ; 
 ; Okay load up the table with this stuff
 ; 
+.if     .defined(Liron) || .defined(IIc)
         ldy     #6          ;Seven bytes of overhead
+.else   ;SoftSP
+        ldy     #0
+        ldx     #5
+.endif
 rdh3:
+.if     .defined(Liron) || .defined(IIc)
         lda     l6clr,x     ;If byte ready, grab it
+.else   ;SoftSP
+        lda     l6clr+TheOff ;If byte ready, grab it
+.endif
         bpl     rdh3        ;*** No Page Cross ***
         and     #%01111111  ;Strip start bit
+.if     .defined(Liron) || .defined(IIc)
         sta     rcvbuf,y
         eor     #$80        ;Pop MSB back on for checksum
+.else   ;SoftSP
+        sta     rcvbuf+1,x
+.endif
         eor     checksum
         sta     checksum
+.if     .defined(Liron) || .defined(IIc)
         dey
+.else   ;SoftSP
+        dex
+.endif
         bpl     rdh3
 ; 
 ; Set groups of seven buffer pointer buffer2
 ; 
+.if     .defined(Liron) || .defined(IIc)
         lda     oddbytes
         beq     start2      ;Skip alteration if no oddbytes
         clc
+.else   ;SoftSP
+        ldx     oddbytes
+        clc
+LC844:
+        lda     l6clr+TheOff ;If byte ready, grab it
+        bpl     LC844
+        and     #%01111111  ;Strip start bit
+        sta     grp7ctr
+        txa
+        beq     LC87F
+.endif
         adc     buffer
         sta     buffer2
+.if     .defined(Liron) || .defined(IIc)
         lda     buffer+1
         adc     #0
         sta     buffer2+1
 ; 
         ldy     #0
+.else   ;SoftSP
+        bcc     start0
+        inc     buffer2+1
+.endif
+
 ; 
 ; Now receive the odd bytes
 ; 
 start0:
+.if     .defined(Liron) || .defined(IIc)
         lda     l6clr,x     ;Read in the odd bytes topbits
+.else   ;SoftSP
+        lda     l6clr+TheOff ;Read in the odd bytes topbits
+.endif
         bpl     start0
         asl     A
         sta     topbits
+.ifdef  SoftSP
+        lda     grp7ctr
+        pha
+        bne     LC886
+.endif
 start1:
+.if     .defined(Liron) || .defined(IIc)
         lda     l6clr,x     ;Get an odd byte
+.else   ;SoftSP
+        lda     l6clr+TheOff ;Get an odd byte
+.endif
         bpl     start1
         asl     topbits     ;Get an MSB
         bcs     gob1        ;If MSB set, leave start bit
@@ -115,3 +167,27 @@ gob1:   sta     (buffer),y  ;Squirrel it away
         iny                 ;Next spot
         cpy     oddbytes    ;Are we done?
         bcc     start1      ;If more, branch
+
+.ifdef  SoftSP
+LC877:
+        lda     l6clr+TheOff
+        bpl     LC877
+        jmp     LC92E
+LC87F:
+        lda     grp7ctr
+        pha
+        beq     LC877
+        bne     SlotDepRd
+LC886:
+        lda     l6clr+TheOff
+        bpl     LC886
+        asl     topbits
+        bcs     LC891
+        eor     #$80
+LC891:
+        sta     (buffer),y
+        iny
+        cpy     oddbytes
+        bcc     LC886
+        ldy     #$00
+.endif

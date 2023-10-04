@@ -1,4 +1,6 @@
+.if     .defined(Liron) || .defined(IIc)
 WritePrep:
+.endif
 Divide7:
 ; 
 ; Set up auxptr <- buffer+$80   if $0FF < bytecount < $200
@@ -19,8 +21,10 @@ Divide7:
 sap1:   clc
         adc     buffer
         sta     auxptr
+.if     .defined(IIc) || .defined(SSC) ;probably ok for Liron, but not in known rom dumps
         bcc     noauxptr
         inc     auxptr+1
+.endif
 ; 
 ; Now look up the first order guess for DIV and MOD. X still has bytecount DIV
 ; 256.
@@ -60,5 +64,13 @@ divide2:
         bne     divide3     ;Take brnch 1st 5 loops
 ; 
         tya                 ;Get back the last three bits
+.if     .defined(Liron) || .defined(IIc)
         jmp     divide4     ;Sixth pass add in remains
+.else   ;SoftSP
+        clc
+        bcc     divide4
+.endif
 divide5:
+.if     .defined(SoftSP)
+        rts
+.endif

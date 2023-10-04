@@ -78,7 +78,7 @@ Line17  =       $450        ;Line 17 of text screen
 ;*  SvBcH       $778+n      $778
 ;*
 
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
 scholes =       $473        ;Use the slot 0 sholes for temps
 .else   ;Liron
 scholes =       $478
@@ -90,7 +90,7 @@ SHTemp1 =       scholes+$100
 Retry2  =       SHTemp1
 SHTempX =       scholes+$180
 SHTempY =       scholes+$200
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
 NumDevices =    $6f9        ;Actually in slot 6
 .else   ;Liron
 Power1  =       $06f8
@@ -134,7 +134,11 @@ PowerReset =     0
 CommReset =      $80
 
 bsyto1   =       50         ;(.55 ms) T/O on /BSY before send
+.if     .defined(Liron) || .defined(IIc)
 bsyto2   =       10         ;(.12 ms) T/O on /BSY after send
+.else   ;SoftSP
+bsyto2   =       26         ;(.xx ms) T/O on /BSY after send
+.endif
 statmto  =       30         ;30 bytes stat mark timeout
 CmdLength =      9          ;Command packet length
 packetbeg =      $c3        ;Mark at beginning of packet

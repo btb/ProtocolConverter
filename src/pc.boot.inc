@@ -10,7 +10,7 @@ Bootcode:
         lda     #$aa
         sta     ProFLAG,x
         sta     Power1,x
-.elseif .defined(IIc)
+.elseif .defined(IIc) || .defined(SoftSP)
         lda     #MSlotValue
         sta     MSlot
         jsr     Reset
@@ -32,12 +32,16 @@ bc1:    lda     boottab,y
         asl     A
         asl     A
         sta     CMDUnit
+.elseif .defined(SoftSP)
+        clc
+        ldx     #SlotNum
+        ror     ProFLAG,x
 .endif
 
 ; 
 ; Now do the read from block zero
 ; 
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
         jsr     ProDOSEntry
 .else   ;Liron
         jsr     bentry
@@ -78,6 +82,8 @@ coma:   bra     coma        ;He's dead Jim.
 
 bootmsg: asc    "Check Disk Drive."
 bmsglen = *-bootmsg
+.elseif .defined(SoftSP)
+        rts
 .else   ;Liron
         jsr     MON_SETVID
         jsr     MON_SETKBD
@@ -124,14 +130,17 @@ NoDisk:
         cstr    "NO DISK TO BOOT"
 .endif
 
+.if     .defined(IIc) || .defined(Liron)
 .include "pc.boot.boottab.inc"
+.endif
 
 ;
 ; This routine is called from the //c reset code. It forces a
 ;  reset of the PC Bus.
 ;
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
 Reset:
+ .if    .defined(IIc)
         ldx     #8
 rst1:
         lda     rcode,x
@@ -141,10 +150,19 @@ rst1:
         jmp     loc0+2
 
 rcode:
+ .endif
         jsr MLIEntry
         .byte   CMD_Init
+ .if    .defined(SoftSP)
+        .word   cmdlist
+ .else
         .word   $0009
+ .endif
         rts
 
 cmdlist: .byte  1,0
+.endif
+
+.if     .defined(SoftSP)
+        rts
 .endif

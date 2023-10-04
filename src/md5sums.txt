@@ -5,3 +5,6 @@
 
 # Liron v1.0 (no later version known?)
 6e3eb8c47b60948a2e069af0dbeb8224  Liron.bin
+
+# SoftSP DIY SSC/GraphiCard v1
+abebfbfe86efcc00c1d512cf1ec9f322  SoftSP-SSC.bin

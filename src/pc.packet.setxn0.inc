@@ -1,6 +1,6 @@
 ; 
 SetXN0:
-.if     .defined(IIc)
+.if     .defined(IIc) || .defined(SoftSP)
         ldx     #TheOff
 .else   ;Liron
         lda     Slot

@@ -1,3 +1,7 @@
+.if     .defined(SoftSP)
+WritePrep:
+        jsr     Divide7
+.endif
 ;*******************************************************************************
 ;*                                                                             *
 ;* PreCheck                  Does the checksumming prepass                     *
