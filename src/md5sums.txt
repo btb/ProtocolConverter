@@ -14,7 +14,9 @@ abebfbfe86efcc00c1d512cf1ec9f322  SoftSP-SSC.bin
 # SoftSP DIY Grappler+ v2
 #5efd0aa40e5586180f25d39b48bd1e03  SoftSP-Grappler.bin
 # SoftSP DIY Grappler+ v3
-3e5c4d68c98b2e2284fc56543040ce07  SoftSP-Grappler.bin
+#3e5c4d68c98b2e2284fc56543040ce07  SoftSP-Grappler.bin
+# SoftSP DIY Grappler+ v4a
+1bcbd43f727edc151638124e16cc8478  SoftSP-Grappler.bin
 
 # SoftSP "OldVer"
 #46d0ba3c263bc19a0b3497c2ce4e4e42  SoftSP-KBOOHK.bin

@@ -132,4 +132,4 @@ LowEntry2:
 .include "pc.main.entry.inc"
 
         cstr    "Sun"
-        .res    57,$00
+        .res    35,$00

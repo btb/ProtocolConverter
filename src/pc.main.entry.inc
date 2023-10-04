@@ -85,10 +85,21 @@ pzp:    lda     ZeroPage,x
         cmp     #$a7
         beq     eqa7
         cmp     #$a6
- .if    .defined(Grappler)
-        bne     allset
- .else
         beq     eqa7
+ .if    .defined(Grappler)
+        and     #$7e
+        eor     #$64
+        beq     allset
+; looks at line 17, character 1 and then line 9, characters 40..1
+        ldx     #$08
+LCDE9:
+        lda     Line17
+        bpl     allset
+        dex
+        bpl     LCDE9
+        lda     #$e5
+        bne     nee5
+ .else
         and     #$fe
         eor     #$e4
         beq     allset
@@ -271,6 +282,11 @@ enabint:
 disabint:
         lda     #ERR_NoInt ;Interrupts not supported
         bne     ErrorHitch
+.endif
+
+.if     .defined(Grappler)
+        nop
+        nop
 .endif
 
 ; 
