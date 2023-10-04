@@ -1,4 +1,4 @@
-.if     .defined(SoftSP)
+.if     .defined(SSC) || .defined(Grappler)
 WritePrep:
         jsr     Divide7
 .endif
@@ -16,6 +16,9 @@ PreCheck:
         lda     buffer+1
         pha                 ;Preserve buffer pointer
         lda     #0
+.if     .defined(KBOOHK)
+        sta     tbodd
+.endif
         ldx     ByteCounth
         beq     lastpass    ;If no complete pages, skip this
 ; 
@@ -65,8 +68,10 @@ xor4:   sta     checksum
 DetTopBits:
         ldy     oddbytes
         dey
+.if     .defined(Liron) || .defined(IIc) || .defined(SSC) || .defined(Grappler)
         lda     #0
         sta     tbodd
+.endif
 ; 
 gtbob:  lda     (buffer),y
         asl     A

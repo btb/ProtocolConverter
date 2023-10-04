@@ -10,10 +10,23 @@ Bootcode:
         lda     #$aa
         sta     ProFLAG,x
         sta     Power1,x
-.elseif .defined(IIc) || .defined(SoftSP)
+.elseif .defined(IIc) || .defined(SSC) || .defined(Grappler)
         lda     #MSlotValue
         sta     MSlot
         jsr     Reset
+.else   ;KBOOHK
+LCF19:  bit     KBDSTRB
+        lda     KBD
+        bpl     LCF30
+        cmp     #$8d    ;'^M'
+        beq     LCF19
+        cmp     #$81    ;'^A'
+        bne     LCF30
+        bit     KBDSTRB
+LCF2C:  lda     #$a6
+        bne     LCF32
+LCF30:  lda     #$a7
+LCF32:  sta     ProFLAG,x
 .endif
 ; 
         ldy     #5         ;Copy a command table
@@ -22,7 +35,7 @@ bc1:    lda     boottab,y
         dey
         bpl     bc1
 
-.if     .defined(Liron)
+.if     .defined(Liron) || .defined(KBOOHK)
 ; 
 ; Now on //e, patch the Unit number (slot*16)
 ; 
@@ -32,7 +45,7 @@ bc1:    lda     boottab,y
         asl     A
         asl     A
         sta     CMDUnit
-.elseif .defined(SoftSP)
+.elseif .defined(SSC) || .defined(Grappler)
         clc
         ldx     #SlotNum
         ror     ProFLAG,x
@@ -41,7 +54,7 @@ bc1:    lda     boottab,y
 ; 
 ; Now do the read from block zero
 ; 
-.if     .defined(IIc) || .defined(SoftSP)
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
         jsr     ProDOSEntry
 .else   ;Liron
         jsr     bentry
@@ -82,9 +95,9 @@ coma:   bra     coma        ;He's dead Jim.
 
 bootmsg: asc    "Check Disk Drive."
 bmsglen = *-bootmsg
-.elseif .defined(SoftSP)
+.elseif .defined(SSC) || .defined(Grappler)
         rts
-.else   ;Liron
+.else   ;Liron||KBOOHK
         jsr     MON_SETVID
         jsr     MON_SETKBD
         ldx     $00
@@ -99,7 +112,11 @@ bmsglen = *-bootmsg
         jsr     MON_VTAB
         lda     #0
         sta     MON_CH
+ .if    .defined(KBOOHK)
+        tax
+ .else
         ldx     #IOErr-BootMsgs
+ .endif
         ldy     Slot
         lda     Retry,y
         bne     notUnBootable
@@ -124,13 +141,21 @@ jmp2basic:
 BootMsgs:
 IOErr:  cstr    "I/O ERROR"
 NotBoot:
+ .if    .defined(KBOOHK)
+        cstr    "NOT BOOT DISK"
+ .else
         cstr    "NOT A BOOTABLE DISK"
+ .endif
 NoDev:  cstr    "NO DEVICE CONNECTED"
 NoDisk:
+ .if    .defined(KBOOHK)
+        cstr    "NO DISK"
+ .else
         cstr    "NO DISK TO BOOT"
+ .endif
 .endif
 
-.if     .defined(IIc) || .defined(Liron)
+.if     .defined(IIc) || .defined(Liron) || .defined(KBOOHK)
 .include "pc.boot.boottab.inc"
 .endif
 
@@ -138,7 +163,7 @@ NoDisk:
 ; This routine is called from the //c reset code. It forces a
 ;  reset of the PC Bus.
 ;
-.if     .defined(IIc) || .defined(SoftSP)
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
 Reset:
  .if    .defined(IIc)
         ldx     #8
@@ -163,6 +188,6 @@ rcode:
 cmdlist: .byte  1,0
 .endif
 
-.if     .defined(SoftSP)
+.if     .defined(SSC) || .defined(Grappler)
         rts
 .endif

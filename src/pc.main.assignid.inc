@@ -52,6 +52,23 @@ mordevices:
 ; 
         jsr     SendOnePack ;Send the command
         bcc     mdev2      ;If okay, skip to get response
+
+.if     .defined(KBOOHK)
+        lda     Unit
+        cmp     #$01
+        bne     LCCD5
+        ldx     Slot
+        lda     ProFLAG,x
+        eor     #$01
+        sta     ProFLAG,x
+        and     #$7f
+        tax
+        jsr     LCB8F
+        jsr     SendOnePack
+        bcc     mdev2
+LCCD5:
+.endif
+
 ; 
         dec     Unit
         jmp     mdev1

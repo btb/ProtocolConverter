@@ -1,4 +1,4 @@
-.if     .defined(Liron) || .defined(IIc)
+.if     .defined(Liron) || .defined(IIc) || .defined(KBOOHK)
 WritePrep:
 .endif
 Divide7:
@@ -21,7 +21,7 @@ Divide7:
 sap1:   clc
         adc     buffer
         sta     auxptr
-.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler) || .defined(KBOOHK)
 ;probably ok for Liron, but not in known rom dumps
         bcc     noauxptr
         inc     auxptr+1
@@ -72,6 +72,6 @@ divide2:
         bcc     divide4
 .endif
 divide5:
-.if     .defined(SoftSP)
+.if     .defined(SSC) || .defined(Grappler)
         rts
 .endif

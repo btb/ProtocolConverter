@@ -1,5 +1,5 @@
 Entry:  bcc     bentry      ;If non-boot, skip jump to boot
-.if     .defined(SoftSP)
+.if     .defined(SSC) || .defined(Grappler)
         jmp     BootC
 .else   ;Liron||IIc
         jmp     Bootcode
@@ -14,7 +14,7 @@ bentry:
         trb     ProFLAG+SlotNum ;ProFLAG is fixed in //c
 
 atentry:
-.elseif .defined(SoftSP)
+.elseif .defined(SSC) || .defined(Grappler)
         lda     ProFLAG+SlotNum ;ProFLAG is fixed
         and     #%10111111
         sta     ProFLAG+SlotNum ;ProFLAG is fixed
@@ -47,13 +47,16 @@ noplay:
 ;  off for as long as possible before using the IWM (phases, /WRREQ
 ;  lines). Wait here 'til the Disk // motors are off.
 ;
-.if     .defined(IIc) || .defined(SoftSP)
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
         jsr     WaitIWMOff  ;Must preserve Y!!
 .endif
 ; 
 ; We can't really tolerate interrupts in most of the code, so disable
 ; 
         php                ;Save interrupt status
+.if     .defined(KBOOHK)
+        jsr     WaitIWMOff ;Must preserve Y!!
+.endif
         sei                ;No interrupts please
 ; 
 ; Preserve the zero page work area
@@ -75,6 +78,19 @@ pzp:    lda     ZeroPage,x
         eor     Power2,y
         beq     allset
 @LCC19:
+.elseif .defined(KBOOHK)
+        lda     ProFLAG,y
+        cmp     #$a7
+        beq     eqa7
+        cmp     #$a6
+        bne     allset
+eqa7:   eor     #$42
+        sta     ProFLAG,y
+        and     #$7f
+        tax
+        jsr     LCB8F
+.endif
+.if     .defined(Liron) || .defined(KBOOHK)
         lda     #$00
         jsr     AssignID
 .endif
@@ -193,9 +209,9 @@ nin1:   sta     (CMDBuffer),y ;Clear some space
         sta     (CMDBuffer),y ;Stick it where they want it
         iny
 
-.if     .defined(IIc) || .defined(SoftSP)
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
         lda     $4F9        ; //c Port 1 interrupt status
-.else   ;Liron
+.else   ;Liron||KBOOHK
         lda     #$00
 .endif
 ; 
@@ -222,7 +238,7 @@ ErrorHitch2:
 BUnit:  lda     #ERR_BadUnit ;Only certain calls can have Unit#0
         bne     ErrorHitch  ;Branch always
 
-.if     .defined(IIc) || .defined(SoftSP)
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
 enabint:
         lda     #$c0
         sta     $5f9
@@ -239,7 +255,7 @@ disabint:
 aokayhitch:
  .endif
         jmp     AOkay
-.else   ;Liron
+.else   ;Liron||KBOOHK
 enabint:
 disabint:
         lda     #ERR_NoInt ;Interrupts not supported
@@ -420,27 +436,32 @@ getresults:
 .if     .defined(Liron)
         and     #$10
         bne     noerror
-.else                       ;probably ok for Liron, but not in known rom dumps
+.elseif .defined(IIc) || .defined(SSC) || .defined(Grappler)
+;probably ok for Liron, but not in known rom dumps
         lsr     a
         lsr     a
         lsr     a
         bcc     ChkOffLn    ;no error, go check off line
         lda     #ERR_WriteProt ;else set WPROT error
-.if     .defined(IIc)
+ .if    .defined(IIc)
         bra     Error
-.else
+ .else
         bne     Error       ;bra is 65C02 only
-.endif
+ .endif
 
 ChkOffLn:
         lsr     a
         lsr     a
 .endif
+.if     .defined(KBOOHK)
+        and     #$10
+        bne     noerror
+.endif
         lda     #ERR_OffLine ;Assume error
-.if     .defined(Liron)
-        bne     Error
-.else                       ;probably ok for Liron, but not in known rom dumps
+.if    .defined(IIc) || .defined(SSC) || .defined(Grappler)
         bcc     Error
+.else   ;Liron||KBOOHK
+        bne     Error
 .endif
 
 ; 
@@ -500,7 +521,7 @@ waitoff:
         bne     waitoff
         ldy     #0          ;Now set the reg back to $00
  .endif
- .if    !.defined(Grappler)
+ .if    .defined(IIc) || .defined(SSC)
         ldx     #TheOff    ;IWM's in slot 6
  .endif
  .if    .defined(IIc)
@@ -509,8 +530,11 @@ waitoff:
  .endif
         lda     ca1clr+TheOff
         lda     lstrbclr+TheOff
- .if    !.defined(Grappler)
+ .if    .defined(IIc) || .defined(SSC)
         ldy     Slot        ;Need Slot in Y
+ .elseif .defined(KBOOHK)
+        ldx     Slot
+        rol     ProFLAG,x
  .endif
 .endif
 ; 
@@ -546,4 +570,5 @@ finalskip:
 ick1:
         plp
 .endif
+do_RTS:
         rts

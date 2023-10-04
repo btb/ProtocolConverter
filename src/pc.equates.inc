@@ -78,7 +78,7 @@ Line17  =       $450        ;Line 17 of text screen
 ;*  SvBcH       $778+n      $778
 ;*
 
-.if     .defined(IIc) || .defined(SoftSP)
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
 scholes =       $473        ;Use the slot 0 sholes for temps
 .else   ;Liron
 scholes =       $478
@@ -90,7 +90,7 @@ SHTemp1 =       scholes+$100
 Retry2  =       SHTemp1
 SHTempX =       scholes+$180
 SHTempY =       scholes+$200
-.if     .defined(IIc) || .defined(SoftSP)
+.if     .defined(IIc) || .defined(SSC) || .defined(Grappler)
 NumDevices =    $6f9        ;Actually in slot 6
 .else   ;Liron
 Power1  =       $06f8

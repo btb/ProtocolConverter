@@ -31,7 +31,11 @@
 ;*******************************************************************************
 
 SendOnePack:
+.if     .defined(KBOOHK)
+        jsr     WritePrep2  ;Does a bunch of stuff
+.else   ;KBOOHK
         jsr     WritePrep   ;Does a bunch of stuff
+.endif
 ; 
 ; Enable PC chain.
 ; 
@@ -483,7 +487,11 @@ scm1:
         jsr     SendByte
 .else   ;SoftSP
         jsr     SendByte0
+ .if    .defined(SSC) || .defined(Grappler)
         jsr     bitearts
+ .else  ;KBOOHK
+        jsr     SendByte1
+ .endif
 .endif
 ; 
 ; Wait until write underflow
