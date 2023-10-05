@@ -533,7 +533,7 @@ LCB71:
 dberror:
 .if     .defined(Liron) || .defined(IIc)
         jsr     SetXN0      ;For dberror entry
-.else
+.else   ;SSC||Grappler||KBOOHK
         ldx     #TheOff
 .endif
         sec                 ;Signal a problem

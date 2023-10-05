@@ -454,7 +454,7 @@ getresults:
         lda     #ERR_WriteProt ;else set WPROT error
  .if    .defined(IIc)
         bra     Error
- .else
+ .else  ;Liron||SSC
         bne     Error       ;bra is 65C02 only
  .endif
 

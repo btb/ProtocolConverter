@@ -109,7 +109,7 @@ bmsglen = *-bootmsg
         sta     MON_CH
  .if    .defined(KBOOHK) || .defined(Grappler)
         tax
- .else
+ .else  ;Liron
         ldx     #IOErr-BootMsgs
  .endif
         ldy     Slot
@@ -138,14 +138,14 @@ IOErr:  cstr    "I/O ERROR"
 NotBoot:
  .if    .defined(KBOOHK)
         cstr    "NOT BOOT DISK"
- .else
+ .else  ;Liron||Grappler
         cstr    "NOT A BOOTABLE DISK"
  .endif
 NoDev:  cstr    "NO DEVICE CONNECTED"
 NoDisk:
  .if    .defined(KBOOHK)
         cstr    "NO DISK"
- .else
+ .else  ;Liron||Grappler
         cstr    "NO DISK TO BOOT"
  .endif
 .endif
@@ -173,9 +173,9 @@ rcode:
  .endif
         jsr MLIEntry
         .byte   CMD_Init
- .if    .defined(SoftSP)
+ .if    .defined(SSC)
         .word   cmdlist
- .else
+ .else  ;IIc
         .word   $0009
  .endif
         rts
