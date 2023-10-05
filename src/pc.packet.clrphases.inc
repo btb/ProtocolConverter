@@ -5,7 +5,7 @@ ClrPhases:
 .if     .defined(Grappler) || .defined(KBOOHK)
         lda     ca2clr,x
         lda     ca1clr,x
-.else
+.else   ;Liron||IIc||SSC
         lda     ca1clr,x
         lda     ca2clr,x
 .endif

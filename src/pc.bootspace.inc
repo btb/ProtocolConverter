@@ -14,7 +14,7 @@
         cmp     #$00       ;Flag that this is a boot
 .if     .defined(IIc) || .defined(SSC)
         bcs     BootC
-.else   ;Liron||KBOOHK
+.else   ;Liron||Grappler||KBOOHK
         bcs     bootcase
 .endif
 
@@ -35,7 +35,7 @@ MLIEntry:                   ;Only use this label in //c version
 skip:
 .if     .defined(KBOOHK) || .defined(Grappler)
         ror     A           ;A[7]=1 if ProDOS, =0 if MLI
-.else
+.else   ;Liron||IIc||SSC
         ldx     #SlotNum
 ; Save the carry flag via ROR
         ror     ProFLAG,x   ;ProFLAG[7]=1 if ProDOS, =0 if MLI
