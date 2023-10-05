@@ -220,7 +220,7 @@ nin1:   sta     (CMDBuffer),y ;Clear some space
 
 .if     .defined(IIc) || .defined(SSC)
         lda     $4F9        ; //c Port 1 interrupt status
-.else   ;Liron||KBOOHK
+.else   ;Liron||Grappler||KBOOHK
         lda     #$00
 .endif
 ; 

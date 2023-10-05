@@ -33,7 +33,7 @@
 SendOnePack:
 .if     .defined(KBOOHK)
         jsr     WritePrep2  ;Does a bunch of stuff
-.else   ;KBOOHK
+.else   ;Liron||IIc||SSC||Grappler
         jsr     WritePrep   ;Does a bunch of stuff
 .endif
 ; 
