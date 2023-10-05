@@ -66,6 +66,7 @@ TheOff  =       $60         ;Disk II in slot 6
 
         .res    512,$00
 
+; Redirects JSR to WritePrep in slot ROM
 WritePrep2:
         lda     MSlot
         pha
