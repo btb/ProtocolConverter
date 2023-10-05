@@ -57,6 +57,7 @@ noplay:
 ; 
         php                ;Save interrupt status
 .if     .defined(KBOOHK) || .defined(Grappler)
+; not sure what we are needing to preserve by moving this
         jsr     WaitIWMOff
 .endif
         sei                ;No interrupts please
@@ -81,6 +82,8 @@ pzp:    lda     ZeroPage,x
         beq     allset
 @LCC19:
 .elseif .defined(KBOOHK) || .defined(Grappler)
+; Seems like a special custom power-up bytes checking scheme, 
+; to see if we need to reset or not. which doesn't even work that well?
         lda     ProFLAG,y
         cmp     #$a7
         beq     eqa7

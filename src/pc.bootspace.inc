@@ -34,6 +34,7 @@ MLIEntry:                   ;Only use this label in //c version
         clc
 skip:
 .if     .defined(KBOOHK) || .defined(Grappler)
+; Dunno why we want this on A here instead of just using ProFLAG
         ror     A           ;A[7]=1 if ProDOS, =0 if MLI
 .else   ;Liron||IIc||SSC
         ldx     #SlotNum
@@ -59,6 +60,8 @@ bootcase:
 .if     .defined(Liron) || .defined(IIc) || .defined(SSC)
         lda     ClearIOROMs ;Clear all $C800 latches but ours
 .else   ;KBOOHK||Grappler
+; Not using hard-coded slot numbers (for us, not the DiskII), so figure those out.
+; Boot flag stuff seems too complicated
         ldx     ClearIOROMs ;Clear all $C800 latches but ours
         jsr     do_RTS      ;Get our address onto stack
         rol     A           ;boot flag onto carry

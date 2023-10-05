@@ -32,7 +32,7 @@
 
 SendOnePack:
 .if     .defined(KBOOHK)
-        jsr     WritePrep2  ;Does a bunch of stuff
+        jsr     WritePrep2  ;Redirects to WritePrep in slot ROM
 .else   ;Liron||IIc||SSC||Grappler
         jsr     WritePrep   ;Does a bunch of stuff
 .endif

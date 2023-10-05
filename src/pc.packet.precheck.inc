@@ -17,6 +17,7 @@ PreCheck:
         pha                 ;Preserve buffer pointer
         lda     #0
 .if     .defined(KBOOHK) || .defined(Grappler)
+        ; moved from DetTopBits below to save on an "lda #0"
         sta     tbodd
 .endif
         ldx     ByteCounth

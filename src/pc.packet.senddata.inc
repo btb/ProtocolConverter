@@ -8,6 +8,7 @@ SendData:
         bcc     sdoubt
         lda     #CommReset
 .if     .defined(Grappler) || .defined(KBOOHK)
+        ; I guess jsr immediately followed by rts is always kind of a waste
         jmp     AssignID
 .else
         jsr     AssignID
