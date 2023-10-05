@@ -25,28 +25,8 @@ wiwm2:  dey
  .if    .defined(SSC)
         ldx     #TheOff
         lda     enable1,x
- .endif
-LCB93:
- .if    .defined(SSC)
         lda     monset,x
         lda     l6clr,x
- .else  ;Grappler||KBOOHK
-        lda     monset+TheOff
-        lda     l7clr+TheOff
-        ldx     #56
-LCB9B:  lda     l6clr+TheOff
-        jsr     LCBAB
-        cmp     l6clr+TheOff
-        bne     SetXN0b
-        dex
-        bne     LCB9B
-SetXN0b:
-   .if  .defined(Grappler) || .defined(KBOOHK)
-SetXN0:
-   .endif
-        ldx     #TheOff
- .endif
- .if    .defined(SSC)
         pha
 LCBF0:
         lda     #$8c
@@ -54,6 +34,18 @@ LCBF2:
         sbc     #$01
         bne     LCBF2
         pla
+ .else  ;Grappler||KBOOHK
+        lda     monset+TheOff
+        lda     l7clr+TheOff
+        ldx     #56
+LCB9B:  lda     l6clr+TheOff
+        jsr     LCBAB
+        cmp     l6clr+TheOff
+        bne     SetXN0
+        dex
+        bne     LCB9B
+SetXN0:
+        ldx     #TheOff
  .endif
 LCBAB:  rts
 .endif

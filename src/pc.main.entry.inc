@@ -57,7 +57,7 @@ noplay:
 ; 
         php                ;Save interrupt status
 .if     .defined(KBOOHK) || .defined(Grappler)
-        jsr     LCB93
+        jsr     WaitIWMOff
 .endif
         sei                ;No interrupts please
 ; 
