@@ -29,7 +29,7 @@ wiwm2:  dey
         lda     l6clr,x
         pha
 LCBF0:
-        lda     #$8c
+        lda     #140
 LCBF2:
         sbc     #$01
         bne     LCBF2
