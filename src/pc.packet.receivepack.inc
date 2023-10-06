@@ -67,6 +67,10 @@ rdh1:   lda     l7clr,x     ;Read sense
         ldy     #statmto    ;Max bytes 'til stat mark
 rdh2:   lda     l6clr,x
         bpl     rdh2        ;*** No Page Cross ***
+.ifndef IIc
+        ; This crosses a page boundary on the IIc ROM 03/04!
+        assert_branch_page rdh2
+.endif
         dey
         bmi     markerr     ;Didn't find a packet in time
 ; 
@@ -90,6 +94,7 @@ rdh3:
         lda     l6clr+TheOff ;If byte ready, grab it
 .endif
         bpl     rdh3        ;*** No Page Cross ***
+        assert_branch_page rdh3
         and     #%01111111  ;Strip start bit
 .if     .defined(Liron) || .defined(IIc)
         sta     rcvbuf,y
