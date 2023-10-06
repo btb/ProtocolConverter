@@ -8,6 +8,7 @@ SoftSP  =       1           ;No IWM
 version =       $200
 
 .include "ca65_a2_strings.inc"
+.include "ca65_assert_branch_page.inc"
 
         .setcpu "6502"
 

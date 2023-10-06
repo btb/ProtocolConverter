@@ -6,6 +6,7 @@
 Liron   =       1           ;Which machine?
 
 .include "ca65_a2_strings.inc"
+.include "ca65_assert_branch_page.inc"
 
         .setcpu "6502"
 

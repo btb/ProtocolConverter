@@ -3,7 +3,7 @@ all: IIc.bin Liron.bin SoftSP-SSC.bin SoftSP-Grappler.bin SoftSP-KBOOHK.bin
 	md5sum --ignore-missing --check md5sums.txt
 	@echo Done.
 
-%.o: %.s ca65_a2_strings.inc pc.boot.inc pc.boot.boottab.inc \
+%.o: %.s ca65_a2_strings.inc ca65_assert_branch_page.inc pc.boot.inc pc.boot.boottab.inc \
 		pc.bootspace.inc pc.cread.inc pc.equates.inc \
 		pc.main.inc pc.main.entry.inc pc.main.paramctab.inc pc.main.assignid.inc \
 		pc.packet.inc pc.packet.sendonepack.inc pc.packet.preamble.inc pc.packet.waste.inc \
