@@ -59,7 +59,7 @@ TheOff  =       $60         ;Disk II in slot 6
         lasc    "SoftSP"
         msb     on
 
-        jmp     LCF30
+        jmp     LCF30       ;Reset vector
         .byte   PCID2
         .word   0
         .byte   PDIDByte

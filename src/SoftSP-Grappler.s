@@ -58,7 +58,7 @@ TheOff  =       $60         ;Disk II in slot 6
         asc     "SoftSP"
         msb on
 
-        jmp     Entry
+        jmp     Entry       ;Reset vector
         .byte   PCID2
         .word   0
         .byte   PDIDByte

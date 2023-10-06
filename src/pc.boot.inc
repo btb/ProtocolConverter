@@ -180,7 +180,7 @@ rcode:
  .endif
         rts
 
-cmdlist: .byte  1,0
+cmdlist: .byte  1,0         ;One parm - the unit $00
 .endif
 
 .if     .defined(SSC)
