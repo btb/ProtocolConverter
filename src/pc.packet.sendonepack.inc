@@ -83,9 +83,7 @@ jmpdatdone:
 ; (111111110011111111001111111100 ...)
 ; 
 chainunbsy:
-.if     .defined(Liron) || .defined(IIc) || .defined(SoftSP)
         lda     reqset,x    ;Raise REQ
-.endif
 ; 
 .if     .defined(Liron) || .defined(IIc) || .defined(SSC)
         ldy     #5          ;Sync plus packet begin
