@@ -51,7 +51,7 @@ bc1:    lda     boottab,y
         jsr     ProDOSEntry
 .elseif .defined(Grappler)
         jsr     SWPROTO
-.else   ;Liron
+.else   ;Liron||KBOOHK
         jsr     bentry
 .endif
         bcs     bootfail   ;If fail, check loc
