@@ -67,7 +67,7 @@ bootcase:
         rol     A           ;boot flag onto carry
         tsx
         lda     stack,x     ;pull hi byte of our address off stack
-LC524:  sta     MSlot
+        sta     MSlot
         and     #$0f
         tax                 ;X <- slot number
         ror     A           ;boot flag onto A
