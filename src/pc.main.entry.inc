@@ -1,4 +1,5 @@
-Entry:  bcc     bentry      ;If non-boot, skip jump to boot
+Entry:
+        bcc     bentry      ;If non-boot, skip jump to boot
 .if     .defined(SSC)
         jmp     BootC
 .elseif .defined(Grappler)
