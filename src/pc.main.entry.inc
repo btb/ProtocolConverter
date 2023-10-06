@@ -3,7 +3,7 @@ Entry:  bcc     bentry      ;If non-boot, skip jump to boot
         jmp     BootC
 .elseif .defined(Grappler)
         jmp     LowEntry2
-.else   ;Liron||IIc
+.else   ;Liron||IIc||KBOOHK
         jmp     Bootcode
 .endif
 
