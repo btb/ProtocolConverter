@@ -16,7 +16,7 @@ Bootcode:
         jsr     Reset
 .else   ;KBOOHK||Grappler
 LCF30:  lda     #$a7
-LCF32:  sta     ProFLAG,x
+        sta     ProFLAG,x
 .endif
 ; 
         ldy     #5         ;Copy a command table
