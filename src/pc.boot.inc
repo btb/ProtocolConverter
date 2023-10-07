@@ -161,7 +161,8 @@ NoDisk:
 .if     .defined(IIc) || .defined(SSC)
 Reset:
  .if    .defined(IIc)
-        ldx     #8
+; This copies all of rcode and cmdlist into the zero page and then jumps to it.
+        ldx     #cmdlist+1-rcode ;8
 rst1:
         lda     rcode,x
         sta     loc0+2,x
@@ -176,7 +177,7 @@ rcode:
  .if    .defined(SSC)
         .word   cmdlist
  .else  ;IIc
-        .word   $0009
+        .word   cmdlist-rcode+loc0+2 ;$0009
  .endif
         rts
 
