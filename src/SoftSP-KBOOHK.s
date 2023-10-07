@@ -1,6 +1,6 @@
 ;*******************************************************************************
 ;* PC                                                                          *
-;* Protocol Converter Code for Liron                                           *
+;* Protocol Converter Code for KBOOHK SoftSP                                   *
 ;*******************************************************************************
 
 KBOOHK  =       1           ;Which machine?

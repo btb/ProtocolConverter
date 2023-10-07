@@ -1,6 +1,6 @@
 ;*******************************************************************************
 ;* PC                                                                          *
-;* Protocol Converter Code for Liron                                           *
+;* Protocol Converter Code for SoftSP DIY Grappler Plus                        *
 ;*******************************************************************************
 
 Grappler =      1           ;Which machine?

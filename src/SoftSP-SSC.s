@@ -1,9 +1,7 @@
 ;*******************************************************************************
 ;* PC                                                                          *
-;* Protocol Converter Code for Liron                                           *
+;* Protocol Converter Code for SoftSP DIY Super Serial Card or GraphiCard      *
 ;*******************************************************************************
-
-; SSC and GraphiCard DIY use the same firmware
 
 SSC     =       1           ;Which machine?
 SoftSP  =       1           ;No IWM
