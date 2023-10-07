@@ -22,7 +22,7 @@ SendByte:
 SendByte1:
         nop
 SendByte0:
-        .byte   $c5
+        .byte   $c5         ;combines with next line as 'cmp $ea'
 SendByte2:
         nop
 SendByte3:
