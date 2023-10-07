@@ -15,7 +15,8 @@ Bootcode:
         sta     MSlot
         jsr     Reset
 .else   ;KBOOHK||Grappler
-LCF30:  lda     #$a7
+Bootcode2:
+        lda     #$a7
         sta     ProFLAG,x
 .endif
 ; 
