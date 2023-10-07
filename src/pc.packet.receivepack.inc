@@ -41,7 +41,7 @@ ReceivePack:
 ; Set up the indirect pointer for jump to 2nd part of code
 ; 
 .if     .defined(Liron)
-        lda     #<SlotDepRd
+        lda     #SlotDepRdLow
         sta     pointer
         lda     Slot
         clc

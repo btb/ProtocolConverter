@@ -113,12 +113,14 @@ TheOff  =       SlotNum << 4
 ; card resteth in slot the fifth.
 ;
 C500org:
+.scope Slot5
 MSlotValue =    >*
 SlotNum =       MSlotValue & $07
 TheOff  =       SlotNum << 4
 .include "pc.bootspace.inc"
 .include "pc.cread.inc"
         endBytes
+.endscope
 
 ;
 ; Here beginneth that code which resideth in the boot space at the time the
@@ -147,6 +149,8 @@ TheOff  =       SlotNum << 4
 .include "pc.cread.inc"
         endBytes
 .endscope
+
+SlotDepRdLow = <Slot5::SlotDepRd ;same in every slot
 
 .include "pc.packet.inc"
 
