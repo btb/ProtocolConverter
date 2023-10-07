@@ -224,6 +224,8 @@ LC963:
         rts
 
 npenderr:
+; I don't think these error codes are ever checked,
+; so can probably remove this code to save space
         lda     #ERR0_nopackend
         bne     gserror
 
