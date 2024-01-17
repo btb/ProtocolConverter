@@ -46,7 +46,9 @@ version =       $100
 C500org:
 MSlotValue =    >*
 SlotNum =       MSlotValue & $07
+.ifndef TheOff
 TheOff  =       $60         ;Disk II in slot 6
+.endif
 .include "pc.bootspace.inc"
 
         .org    $c82e
