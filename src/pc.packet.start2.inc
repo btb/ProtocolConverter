@@ -4,7 +4,6 @@ start2:
 .elseif .defined(Liron)
         jmp     (pointer)
 .elseif .defined(SSC) || .defined(Grappler)
-bitearts:
         .byte   $24
 noprts: nop
         rts

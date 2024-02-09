@@ -494,7 +494,7 @@ scm1:
 .else   ;SoftSP
         jsr     SendByte0
  .if    .defined(SSC)
-        jsr     bitearts
+        jsr     start2
  .else  ;KBOOHK||Grappler
         jsr     SendByte1
  .endif
