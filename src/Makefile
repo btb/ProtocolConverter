@@ -1,5 +1,6 @@
 
 all: IIc.bin Liron.bin
+	md5sum --ignore-missing --check md5sums.txt
 	@echo Done.
 
 %.o: %.s ca65_a2_strings.inc pc.boot.inc pc.bootspace.inc pc.cread.inc pc.equates.inc pc.main.inc pc.packet.inc
