@@ -41,8 +41,6 @@ SoftSP  =       1           ;No IWM
         msb on
 
 .include "pc.equates.inc"
-.include "pc.packet.inc"
-.include "pc.main.inc"
 
         .res    1280,$00
 
