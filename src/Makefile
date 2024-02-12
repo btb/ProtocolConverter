@@ -2,7 +2,10 @@
 all: IIc.bin Liron.bin SoftSP-SSC.bin SoftSP-Grappler.bin SoftSP-KBOOHK.bin \
 	SoftSP-Grappler_S1.bin SoftSP-Grappler_S2.bin SoftSP-Grappler_S3.bin \
 	SoftSP-Grappler_S4.bin SoftSP-Grappler_S5.bin SoftSP-Grappler_S6.bin \
-	SoftSP-Grappler_S7.bin
+	SoftSP-Grappler_S7.bin \
+	SoftSP-KBOOHK_S1.bin SoftSP-KBOOHK_S2.bin SoftSP-KBOOHK_S3.bin \
+	SoftSP-KBOOHK_S4.bin SoftSP-KBOOHK_S5.bin SoftSP-KBOOHK_S6.bin \
+	SoftSP-KBOOHK_S7.bin
 
 	md5sum --ignore-missing --check md5sums.txt
 	@echo Done.
@@ -23,6 +26,13 @@ SoftSP-Grappler_S%.o: SoftSP-Grappler.s $(ALL_INCS)
 	ca65 --target apple2 -l "$@.list" -D TheOff="\$$$*0" -o "$@" "$<"
 
 SoftSP-Grappler_S%.bin: SoftSP-Grappler_S%.o
+	ld65 --config apple2-asm.cfg -o "$@" "$<"
+
+# For Slot N, defines TheOff as "$N0"
+SoftSP-KBOOHK_S%.o: SoftSP-KBOOHK.s $(ALL_INCS)
+	ca65 --target apple2 -l "$@.list" -D TheOff="\$$$*0" -o "$@" "$<"
+
+SoftSP-KBOOHK_S%.bin: SoftSP-KBOOHK_S%.o
 	ld65 --config apple2-asm.cfg -o "$@" "$<"
 
 %.o: %.s $(ALL_INCS)

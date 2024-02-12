@@ -46,7 +46,9 @@ SoftSP  =       1           ;No IWM
 ; Here beginneth that code which resideth in the boot space at the time the
 ; card resteth in slot the fifth.
 ;
+.ifndef TheOff
 TheOff  =       $60         ;Disk II in slot 6
+.endif
 .include "pc.bootspace.inc"
 
 .include "pc.packet.divide7.inc"
