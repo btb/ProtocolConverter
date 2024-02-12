@@ -42,21 +42,11 @@ SoftSP  =       1           ;No IWM
 
 .include "pc.equates.inc"
 
-        .res    1280,$00
+; Slot ROMS are all identical
 
-        .org    $c500
-;
-; Here beginneth that code which resideth in the boot space at the time the
-; card resteth in slot the fifth.
-;
-.ifndef TheOff
-TheOff  =       $60         ;Disk II in slot 6
-.endif
-.include "pc.bootspace.inc"
+        .org $c000
 
-.include "pc.packet.divide7.inc"
-.include "pc.packet.precheck.inc"
-
+.macro  endBytes
         .res    5,$00
         msb     off
         cstr    "V6"
@@ -68,14 +58,124 @@ TheOff  =       $60         ;Disk II in slot 6
         .word   0
         .byte   PDIDByte
         .byte   <ProDOSEntry
+.endmacro
 
+.ifndef TheOff
+; Building the "canonical" version, distributed as "SOFTFIRM" on the softspr
+; utility disk: SoftSP in slot 5, Disk II in slot 6
+
+; Slots 0-4 empty
+        .res    1280,$00
+.else
+; Building for Disk II slot passed as TheOff parameter. SoftSP in any other
+; usable slot
+
+;
+; Slot zero, not usable, but the softspr utility places it anyway.
+;
+.scope  Slot0
+.include "pc.bootspace.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+        endBytes
+.endscope
+
+;
+; Here beginneth that code which resideth in the boot space at the time the
+; card resteth in slot the first.
+;
+.scope  Slot1
+.include "pc.bootspace.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+        endBytes
+.endscope
+
+;
+; Here beginneth that code which resideth in the boot space at the time the
+; card resteth in slot the second.
+;
+.scope  Slot2
+.include "pc.bootspace.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+        endBytes
+.endscope
+
+;
+; Here beginneth that code which resideth in the boot space at the time the
+; card resteth in slot the third.
+;
+.scope  Slot3
+.include "pc.bootspace.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+        endBytes
+.endscope
+
+;
+; Here beginneth that code which resideth in the boot space at the time the
+; card resteth in slot the fourth.
+;
+.scope  Slot4
+.include "pc.bootspace.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+        endBytes
+.endscope
+
+.endif
+
+;
+; Here beginneth that code which resideth in the boot space at the time the
+; card resteth in slot the fifth.
+;
+.scope  Slot5
+.include "pc.bootspace.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+        endBytes
+.endscope
+
+.ifndef TheOff
+
+; "canonical version" - set this now
+TheOff  =       $60         ;Disk II in slot 6
+
+; Slots 6-7 empty
         .res    512,$00
+
+.else
+
+;
+; Here beginneth that code which resideth in the boot space at the time the
+; card resteth in slot the sixth.
+;
+.scope  Slot6
+.include "pc.bootspace.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+        endBytes
+.endscope
+
+;
+; Here beginneth that code which resideth in the boot space at the time the
+; card resteth in slot the seventh.
+;
+.scope  Slot7
+.include "pc.bootspace.inc"
+.include "pc.packet.divide7.inc"
+.include "pc.packet.precheck.inc"
+        endBytes
+.endscope
+
+.endif
 
 ; Redirects JSR to WritePrep in slot ROM
 WritePrep2:
         lda     MSlot
         pha
-        lda     #<WritePrep-1
+        lda     #<Slot5::WritePrep-1 ;same in every slot
         pha
         rts
 
