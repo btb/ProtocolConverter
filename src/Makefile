@@ -10,10 +10,13 @@ all: IIc.bin Liron.bin SoftSP-SSC.bin SoftSP-Grappler.bin SoftSP-KBOOHK.bin \
 	md5sum --ignore-missing --check md5sums.txt
 	@echo Done.
 
-ALL_INCS=ca65_a2_strings.inc ca65_assert_branch_page.inc pc.boot.inc pc.boot.boottab.inc \
-		pc.bootspace.inc pc.cread.inc pc.equates.inc \
-		pc.main.inc pc.main.entry.inc pc.main.paramctab.inc pc.main.assignid.inc \
-		pc.packet.inc pc.packet.sendonepack.inc pc.packet.preamble.inc pc.packet.waste.inc \
+ALL_INCS=ca65_a2_strings.inc ca65_assert_branch_page.inc \
+	pc.boot.inc pc.boot.boottab.inc \
+	pc.bootspace.inc \
+	pc.cread.inc \
+	pc.equates.inc \
+	pc.main.inc pc.main.entry.inc pc.main.paramctab.inc pc.main.assignid.inc \
+	pc.packet.inc pc.packet.sendonepack.inc pc.packet.preamble.inc pc.packet.waste.inc \
 		pc.packet.markerr.inc pc.packet.receivepack.inc pc.packet.start2.inc \
 		pc.packet.resetchain.inc pc.packet.enablechain.inc pc.packet.clrphases.inc \
 		pc.packet.setxn0.inc pc.packet.shifttables.inc pc.packet.senddata.inc \
