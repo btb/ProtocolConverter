@@ -24,7 +24,6 @@ SoftSP-Grappler_S%.o: SoftSP-Grappler.s $(ALL_INCS)
 
 SoftSP-Grappler_S%.bin: SoftSP-Grappler_S%.o
 	ld65 --config apple2-asm.cfg -o "$@" "$<"
-	# diff -s "$@.orig" "$@"
 
 %.o: %.s $(ALL_INCS)
 	ca65 --target apple2 -l "$@.list" -o "$@" "$<"
