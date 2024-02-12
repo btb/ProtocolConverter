@@ -1,3 +1,6 @@
+# Disk II P5 (16-sector)
+2020aa1413ff77fe29353f3ee72dc295  DiskII-P5.bin
+
 # IIc v1.0 (ROM 00)
 #66e3623a1a14eb68570d7dd56664fbd8  IIc.bin
 # IIc v1.0.1 (ROM 03/04)

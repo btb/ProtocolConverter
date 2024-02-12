@@ -5,7 +5,8 @@ all: IIc.bin Liron.bin SoftSP-SSC.bin SoftSP-Grappler.bin SoftSP-KBOOHK.bin \
 	SoftSP-Grappler_S7.bin \
 	SoftSP-KBOOHK_S1.bin SoftSP-KBOOHK_S2.bin SoftSP-KBOOHK_S3.bin \
 	SoftSP-KBOOHK_S4.bin SoftSP-KBOOHK_S5.bin SoftSP-KBOOHK_S6.bin \
-	SoftSP-KBOOHK_S7.bin
+	SoftSP-KBOOHK_S7.bin \
+	SmartDiskII.bin DiskII-P5.bin
 
 	md5sum --ignore-missing --check md5sums.txt
 	@echo Done.
@@ -43,6 +44,14 @@ SoftSP-KBOOHK_S%.bin: SoftSP-KBOOHK_S%.o
 
 %.bin: %.o
 	ld65 --config apple2-asm.cfg -o "$@" "$<"
+
+# Same firmware as the KBOOHK SoftSP card, but use all seven variations.
+# Also throw in the DiskII firmware so we can be a DiskII
+SmartDiskII.o: SmartDiskII.s DiskII-P5.bin SoftSP-KBOOHK_S1.bin \
+	SoftSP-KBOOHK_S2.bin SoftSP-KBOOHK_S3.bin SoftSP-KBOOHK_S4.bin \
+	SoftSP-KBOOHK_S5.bin SoftSP-KBOOHK_S6.bin SoftSP-KBOOHK_S7.bin
+
+	ca65 --target apple2 -o "$@" "$<"
 
 clean:
 	rm -f *.bin *.o
