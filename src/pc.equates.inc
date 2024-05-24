@@ -90,11 +90,13 @@ SHTemp1 =       scholes+$100
 Retry2  =       SHTemp1
 SHTempX =       scholes+$180
 SHTempY =       scholes+$200
+.if     .defined(Liron)
+Power1  =       $06f8
+Power2  =       $0778
+.endif
 .if     .defined(IIc) || .defined(SSC)
 NumDevices =    $6f9        ;Actually in slot 6
 .else   ;Liron||KBOOHK||Grappler
-Power1  =       $06f8
-Power2  =       $0778
 NumDevices =    $7f8
 .endif
 
