@@ -6,18 +6,17 @@
 Bootcode:
         stx     Slot
 
-.if     .defined(Liron)
-        lda     #$aa
+.if     .defined(Liron) || .defined(KBOOHK) || .defined(Grappler)
+Bootcode2:
+        lda     #ProFLAGInit
         sta     ProFLAG,x
+ .if    .defined(Liron)
         sta     Power1,x
-.elseif .defined(IIc) || .defined(SSC)
+ .endif
+.else   ;IIc||SSC
         lda     #MSlotValue
         sta     MSlot
         jsr     Reset
-.else   ;KBOOHK||Grappler
-Bootcode2:
-        lda     #$a7
-        sta     ProFLAG,x
 .endif
 ; 
         ldy     #5         ;Copy a command table

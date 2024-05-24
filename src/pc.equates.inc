@@ -131,6 +131,11 @@ SWRTS2  =       $c784       ;RTS to bank 1
 
 PBBValue =       $a5        ;Powerup Byte Base Value
 PBCValue =       $ff        ;Powerup Byte Complement Value
+.if     .defined(Liron)
+ProFLAGInit =    $aa
+.elseif .defined(KBOOHK) || .defined(Grappler)
+ProFLAGInit =    $a7
+.endif
 
 PowerReset =     0
 CommReset =      $80
