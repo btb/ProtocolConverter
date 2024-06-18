@@ -55,7 +55,7 @@ TheOff  =       $60         ;Disk II in slot 6
 
         .res    7,$00
         msb     off
-        cstr    "V6"
+        asc     "V6A"
         asc     "SoftSP"
         msb on
 

@@ -85,11 +85,7 @@ jmpdatdone:
 chainunbsy:
         lda     reqset,x    ;Raise REQ
 ; 
-.if     .defined(Liron) || .defined(IIc) || .defined(SSC)
         ldy     #5          ;Sync plus packet begin
-.else   ;Grappler||KBOOHK
-        nop
-.endif
 ; 
         lda     #$ff        ;Send out the 1st byte sync
         sta     l7set,x
@@ -99,8 +95,8 @@ chainunbsy:
  .if    .defined(SSC)
         and     ($00),y
  .else  ;Grappler||KBOOHK
-        ldy     #5          ;Sync plus packet begin
-        bit     topbits
+        bne     ssc
+        nop
  .endif
 .endif
 

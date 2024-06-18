@@ -49,7 +49,7 @@ SoftSP  =       1           ;No IWM
 .macro  endBytes
         .res    5,$00
         msb     off
-        cstr    "V6"
+        lasc    "V6A"
         lasc    "SoftSP"
         msb     on
 
