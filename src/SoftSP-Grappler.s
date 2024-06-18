@@ -48,10 +48,10 @@ SlotNum =       MSlotValue & $07
 TheOff  =       $60         ;Disk II in slot 6
 .include "pc.bootspace.inc"
 
-        .org    $c832
+        .org    $c82e
 .include "pc.boot.inc"
 
-        .res    3,$00
+        .res    7,$00
         msb     off
         cstr    "V6"
         asc     "SoftSP"

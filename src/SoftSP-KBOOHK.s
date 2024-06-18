@@ -52,7 +52,7 @@ TheOff  =       $60         ;Disk II in slot 6
 .include "pc.packet.divide7.inc"
 .include "pc.packet.precheck.inc"
 
-        .res    1,$00
+        .res    5,$00
         msb     off
         cstr    "V6"
         lasc    "SoftSP"

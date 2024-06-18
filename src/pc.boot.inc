@@ -15,11 +15,7 @@ Bootcode:
         sta     MSlot
         jsr     Reset
 .else   ;KBOOHK||Grappler
- .if    .defined(KBOOHK)
-LCF30:  lda     #$a6
- .else  ;Grappler
 LCF30:  lda     #$a7
- .endif
 LCF32:  sta     ProFLAG,x
 .endif
 ; 

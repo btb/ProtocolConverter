@@ -61,19 +61,15 @@ bootcase:
 .else   ;KBOOHK||Grappler
         ldx     ClearIOROMs ;Clear all $C800 latches but ours
         jsr     do_RTS      ;Get our address onto stack
-        tax                 ;boot flag onto negative flag
-        clc
-        bpl     skipsec     ;if negative, set carry
-        sec
-skipsec:
+        rol     A           ;boot flag onto carry
         tsx
         lda     stack,x     ;pull hi byte of our address off stack
 LC524:  sta     MSlot
         and     #$0f
         tax                 ;X <- slot number
-        php
+        ror     A           ;boot flag onto A
         asl     ProFLAG,x   ;dump hi bit
-        plp
+        rol     A           ;boot flag onto carry
         ror     ProFLAG,x   ;Finally have the boot on ProFLAG[7]
         plp
 .endif

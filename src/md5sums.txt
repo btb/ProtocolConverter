@@ -20,7 +20,9 @@
 # SoftSP DIY Grappler+ v5
 #b57325455ea7034acff7ac73383108ce  SoftSP-Grappler.bin
 # SoftSP DIY Grappler+ v62 (as included with wDrive firmware v2.1b00)
-bc504f981937a2891466acc209ae0353  SoftSP-Grappler.bin
+#bc504f981937a2891466acc209ae0353  SoftSP-Grappler.bin
+# SoftSP DIY Grappler+ v6
+9a5c4877552d14b5bf36a8e9380c9f19  SoftSP-Grappler.bin
 
 # SoftSP "OldVer"
 #46d0ba3c263bc19a0b3497c2ce4e4e42  SoftSP-KBOOHK.bin
@@ -33,4 +35,6 @@ bc504f981937a2891466acc209ae0353  SoftSP-Grappler.bin
 # SoftSP v5
 #87b7ed747677aca5c2e53490fe64aaf9  SoftSP-KBOOHK.bin
 # SoftSP "v62" (as included with wDrive firmware v2.1b00)
-5b606c0b58a60e679dfa01958da107d5  SoftSP-KBOOHK.bin
+#5b606c0b58a60e679dfa01958da107d5  SoftSP-KBOOHK.bin
+# SoftSP v6
+d97f9e7d4953a48c20d8c03e92f7a5be  SoftSP-KBOOHK.bin
